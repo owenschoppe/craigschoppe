@@ -1,0 +1,13 @@
+steps:
+    # Npm Install All Dependencies
+    - name: node:12
+      entrypoint: npm
+      args: ["install"]
+    # Npm Build React App
+    - name: node:12
+      entrypoint: npm
+      args: ["run", "build"]
+    # Deploy to App Engine
+    - name: "gcr.io/cloud-builders/gcloud"
+      args: ["app", "deploy", "--project", "craigschoppe"]
+      timeout: "600s"
