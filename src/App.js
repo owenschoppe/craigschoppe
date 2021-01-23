@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { Controls } from "./components/Controls";
 import { css } from "@emotion/css";
+import ig from "./instagram.png";
 
 const getImages = async () => {
     const images = await fetch("/files");
@@ -41,6 +42,23 @@ const imageStyle = css`
     max-width: 100%;
 `;
 
+const instagramStyle = css`
+    width: 24px;
+    height: 24px;
+    content: "";
+    display: block;
+    background-image: url(${ig});
+    filter: invert(100%);
+    background-size: contain;
+    background-repeat: no-repeat;
+`;
+
+const footerStyle = css`
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+`;
+
 function App() {
     const [images, setImages] = useState([]);
     const [image, setImage] = useState(null);
@@ -71,6 +89,14 @@ function App() {
                         alt={image}
                     />
                 ) : null}
+            </div>
+            <div className={footerStyle}>
+                <a
+                    className={instagramStyle}
+                    href="https://www.instagram.com/wood_by_schoppe/"
+                >
+                    <span className="assistiveText">Instagram</span>
+                </a>
             </div>
         </div>
     );
