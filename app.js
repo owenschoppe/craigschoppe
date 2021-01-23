@@ -97,7 +97,15 @@ app.post("/upload", multer.single("file"), (req, res, next) => {
     blobStream.end(req.file.buffer);
 });
 
-app.use(express.static(path.join(__dirname, "build")));
+app.use(
+    express.static(path.join(__dirname, "build"), {
+        setHeaders: (res, path) => {
+            // if (path.endsWith("sitemap.xml")) {
+            res.setHeader("X-Robots-Tag", "noindex, nofollow");
+            // }
+        },
+    })
+);
 app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "build", "index.html"));
 });
