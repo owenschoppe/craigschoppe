@@ -81,10 +81,15 @@ const instagramStyle = css`
 `;
 
 const footerStyle = css`
-    margin: 0 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
     margin-bottom: 3rem;
     display: flex;
     justify-content: center;
+    @media (min-width: 720px) {
+        margin-left: 3rem;
+        margin-right: 3rem;
+    }
 `;
 
 const attributionStyle = css`
@@ -165,12 +170,12 @@ function App() {
                         </a>
                         .
                     </span>
-                    <a
+                    {/* <a
                         className={instagramStyle}
                         href="https://www.instagram.com/wood_by_schoppe/"
                     >
                         <span className="assistiveText">Instagram</span>
-                    </a>
+                    </a> */}
                 </div>
             </div>
         </div>
