@@ -65,8 +65,8 @@ async function listFilesPaginated() {
 app.get("/files", (req, res) => {
     listFilesPaginated()
         .then((data) => {
-            console.log(data);
-            res.send(data[0].map((file) => file.id));
+            // console.log(data);
+            res.json(data[0].map((file) => file.id));
         })
         .catch(console.error);
 });
