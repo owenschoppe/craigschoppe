@@ -33,8 +33,13 @@ const galleryStyle = css`
     justify-content: center;
     align-items: center;
     flex: 1 1 auto;
-    margin: 1rem;
     min-height: 0;
+    @media (min-width: 420px) {
+        margin: 1rem;
+    }
+    @media (min-width: 720px) {
+        margin: 3rem;
+    }
 `;
 
 const imageStyle = css`
