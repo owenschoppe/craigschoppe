@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useCallback } from "react";
 import { css, cx } from "@emotion/css";
 
 const controlsStyle = css`
@@ -27,6 +27,14 @@ const next = css``;
 const Controls = (props) => {
     const { array, index, setIndex } = props;
 
+    const handlePrev = () => {
+        setIndex((index - 1 + array.length) % array.length);
+    };
+
+    const handleNext = () => {
+        setIndex((index + 1) % array.length);
+    };
+
     const handleKeyboard = (e) => {
         if (e.key === "ArrowLeft") {
             // left arrow
@@ -35,14 +43,6 @@ const Controls = (props) => {
             // right arrow
             handleNext();
         }
-    };
-
-    const handlePrev = () => {
-        setIndex((index - 1 + array.length) % array.length);
-    };
-
-    const handleNext = () => {
-        setIndex((index + 1) % array.length);
     };
 
     useEffect(() => {
@@ -58,10 +58,18 @@ const Controls = (props) => {
 
     return (
         <div className={controlsStyle}>
-            <button className={cx(button, prev)} onClick={handlePrev}>
+            <button
+                className={cx(button, prev)}
+                onClick={handlePrev}
+                title="Click to Go Back"
+            >
                 ← <span className="assistiveText">Previous Photo</span>
             </button>
-            <button className={cx(button, next)} onClick={handleNext}>
+            <button
+                className={cx(button, next)}
+                onClick={handleNext}
+                title="Click to Advance"
+            >
                 → <span className="assistiveText">Next Photo</span>
             </button>
         </div>
