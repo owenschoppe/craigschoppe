@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { css } from "@emotion/css";
 
 const h1 = css`
+    margin: 1rem 0;
     font-size: 1.5rem;
     @media (min-width: 420px) {
         font-size: 2rem;

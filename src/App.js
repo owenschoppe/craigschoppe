@@ -39,6 +39,7 @@ const headerStyle = css`
 `;
 
 const h1 = css`
+    margin: 1rem 0;
     font-size: 1.5rem;
     @media (min-width: 420px) {
         font-size: 2rem;
@@ -76,11 +77,14 @@ const instagramStyle = css`
     filter: invert(100%);
     background-size: contain;
     background-repeat: no-repeat;
-    margin-right: 0.25rem;
+    margin-left: 0.25rem;
 `;
 
 const footerStyle = css`
-    margin: 1rem;
+    margin: 0 1rem;
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: center;
 `;
 
 const attributionStyle = css`
@@ -137,20 +141,8 @@ function App() {
                 ) : null}
             </div>
             <div className={footerStyle}>
-                <div>
-                    <Controls
-                        array={images}
-                        index={index}
-                        setIndex={setIndex}
-                    />
-                </div>
+                <Controls array={images} index={index} setIndex={setIndex} />
                 <div className={attributionStyle}>
-                    <a
-                        className={instagramStyle}
-                        href="https://www.instagram.com/wood_by_schoppe/"
-                    >
-                        <span className="assistiveText">Instagram</span>
-                    </a>
                     <a
                         rel="license"
                         href="http://creativecommons.org/licenses/by-nc-nd/4.0/"
@@ -173,6 +165,12 @@ function App() {
                         </a>
                         .
                     </span>
+                    <a
+                        className={instagramStyle}
+                        href="https://www.instagram.com/wood_by_schoppe/"
+                    >
+                        <span className="assistiveText">Instagram</span>
+                    </a>
                 </div>
             </div>
         </div>

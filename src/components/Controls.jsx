@@ -3,6 +3,10 @@ import { css, cx } from "@emotion/css";
 
 const controlsStyle = css`
     font-family: "Poppins", sans-serif;
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 const button = css`
@@ -19,6 +23,10 @@ const button = css`
         outline: none;
         border: 1px solid white;
     }
+`;
+
+const title = css`
+    margin: 0 1rem;
 `;
 
 const prev = css``;
@@ -65,6 +73,9 @@ const Controls = (props) => {
             >
                 ← <span className="assistiveText">Previous Photo</span>
             </button>
+            <span className={title}>
+                {array.length ? array[index].split("%2F")[1] : null}
+            </span>
             <button
                 className={cx(button, next)}
                 onClick={handleNext}
