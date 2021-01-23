@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { Tile } from "./components/Tile";
 import { Controls } from "./components/Controls";
 import { css } from "@emotion/css";
 
@@ -23,10 +22,6 @@ const headerStyle = css`
     align-items: center;
     padding: 0 1rem;
     font-family: "Cormorant Garamond", serif;
-`;
-
-const listStyle = css`
-    overflow-y: scroll;
 `;
 
 const galleryStyle = css`
@@ -68,11 +63,6 @@ function App() {
                 <h1>by Craig Schoppe</h1>
                 <Controls array={images} index={index} setIndex={setIndex} />
             </header>
-            {/* <div className={listStyle}>
-                {images.map((image, i) => (
-                    <Tile image={image} key={`image-${i}`} />
-                ))}
-            </div> */}
             <div className={galleryStyle}>
                 {image ? (
                     <img
