@@ -16,5 +16,5 @@ runtime: nodejs
 env: flex
 
 env_variables:
-  GCLOUD_STORAGE_BUCKET: craigschoppe-images
+    GCLOUD_STORAGE_BUCKET: craigschoppe-images
 # [END gae_flex_storage_yaml]

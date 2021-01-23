@@ -34,6 +34,8 @@ const { Storage } = require("@google-cloud/storage");
 const storage = new Storage();
 
 const app = express();
+app.set("trust proxy", true);
+
 // app.set("view engine", "pug");
 app.use(bodyParser.json());
 
