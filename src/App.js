@@ -113,7 +113,7 @@ function App() {
         getFiles().then(({ images, folders }) => {
             setAllImages(images);
             setFolders(folders);
-            setFolder(0); //~~(Math.random() * folders.length) For random folder
+            setFolder(~~(Math.random() * folders.length)); // For random folder
         });
     }, []);
 

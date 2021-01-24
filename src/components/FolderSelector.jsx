@@ -31,7 +31,7 @@ const FolderSelector = (props) => {
     const { folder, folders, setFolder } = props;
 
     const handleClick = () => {
-        setFolder(folders[(folder + 1 + folders.length) % folders.length]);
+        setFolder((folder + 1 + folders.length) % folders.length);
     };
 
     useEffect(() => {
