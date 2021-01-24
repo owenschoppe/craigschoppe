@@ -2,24 +2,23 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { Controls } from "./components/Controls";
 import { FolderSelector } from "./components/FolderSelector";
+import { TitleBlock } from "./components/TitleBlock";
 import { css } from "@emotion/css";
 import ig from "./instagram.png";
 
 const getFiles = async () => {
     const data = await (await fetch("/files")).json();
 
-    const images = data[0]
-        .filter((file) => file.name.slice(-1) !== "/") //Filter out folders
-        .map((file) => file.id);
-    const folders = data[0]
-        .filter((file) => file.name.slice(-1) === "/")
-        .map((folder) => folder.id); //Find folders
+    const images = data[0].filter((file) => file.name.slice(-1) !== "/"); //Filter out folders
+    // .map((file) => file.id);
+    const folders = data[0].filter((file) => file.name.slice(-1) === "/"); //Find folders
+    // .map((folder) => folder.id);
     console.log(data, images, folders);
     return { images, folders };
 };
 
 const getImages = (images, folder) => {
-    return images.filter((image) => image.startsWith(folder));
+    return images.filter((image) => image.id.startsWith(folder.id));
 };
 
 const appStyle = css`
@@ -118,13 +117,22 @@ function App() {
     }, []);
 
     useEffect(() => {
-        setImages(getImages(allImages, folder));
+        console.log(images, folders, folder);
+        if (folder) setImages(getImages(allImages, folder));
     }, [allImages, folder]);
 
     useEffect(() => {
         console.log(images, index);
         if (images) setImage(images[index]);
     }, [images, index]);
+
+    const handlePrev = () => {
+        setIndex((index - 1 + images.length) % images.length);
+    };
+
+    const handleNext = () => {
+        setIndex((index + 1) % images.length);
+    };
 
     return (
         <div className={appStyle}>
@@ -140,13 +148,19 @@ function App() {
                 {image ? (
                     <img
                         className={imageStyle}
-                        src={`https://storage.googleapis.com/craigschoppe-images/${image}`}
-                        alt={image}
+                        src={`https://storage.googleapis.com/craigschoppe-images/${image.id}`}
+                        alt={image.name}
                     />
                 ) : null}
             </div>
             <div className={footerStyle}>
-                <Controls array={images} index={index} setIndex={setIndex} />
+                <Controls
+                    image={image}
+                    handleNext={handleNext}
+                    handlePrev={handlePrev}
+                >
+                    <TitleBlock image={image} />
+                </Controls>
                 <div className={attributionStyle}>
                     <a
                         rel="license"

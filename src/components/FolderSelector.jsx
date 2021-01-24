@@ -49,7 +49,7 @@ const FolderSelector = (props) => {
                 onClick={handleClick}
                 title="Click to Change"
             >
-                <h1 className={h1}>{folder.slice(0, -3)}</h1>
+                <h1 className={h1}>{folder.name.slice(0, -1)}</h1>
             </button>
         );
     };

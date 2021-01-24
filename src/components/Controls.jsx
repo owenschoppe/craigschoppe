@@ -25,23 +25,11 @@ const button = css`
     }
 `;
 
-const title = css`
-    margin: 0 1rem;
-`;
-
 const prev = css``;
 const next = css``;
 
 const Controls = (props) => {
-    const { array, index, setIndex } = props;
-
-    const handlePrev = () => {
-        setIndex((index - 1 + array.length) % array.length);
-    };
-
-    const handleNext = () => {
-        setIndex((index + 1) % array.length);
-    };
+    const { image, handleNext, handlePrev } = props;
 
     const handleKeyboard = (e) => {
         if (e.key === "ArrowLeft") {
@@ -58,11 +46,7 @@ const Controls = (props) => {
         return () => {
             window.removeEventListener("keydown", handleKeyboard);
         };
-    }, [array, handleKeyboard, index]);
-
-    useEffect(() => {
-        console.log("newIndex", index);
-    }, [index]);
+    }, [image]);
 
     return (
         <div className={controlsStyle}>
@@ -73,9 +57,7 @@ const Controls = (props) => {
             >
                 ← <span className="assistiveText">Previous Photo</span>
             </button>
-            <span className={title}>
-                {array.length ? array[index].split("%2F")[1] : null}
-            </span>
+            {props.children}
             <button
                 className={cx(button, next)}
                 onClick={handleNext}
