@@ -31,11 +31,7 @@ const FolderSelector = (props) => {
     const { folder, folders, setFolder } = props;
 
     const handleClick = () => {
-        setFolder(
-            folders[
-                (folders.indexOf(folder) + 1 + folders.length) % folders.length
-            ]
-        );
+        setFolder(folders[(folder + 1 + folders.length) % folders.length]);
     };
 
     useEffect(() => {
@@ -49,12 +45,12 @@ const FolderSelector = (props) => {
                 onClick={handleClick}
                 title="Click to Change"
             >
-                <h1 className={h1}>{folder.name.slice(0, -1)}</h1>
+                <h1 className={h1}>{folders[folder].name.slice(0, -1)}</h1>
             </button>
         );
     };
 
-    return <div>{folder ? getButton() : null}</div>;
+    return <div>{folder !== null ? getButton() : null}</div>;
 };
 
 export { FolderSelector };

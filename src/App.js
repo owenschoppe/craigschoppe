@@ -113,13 +113,13 @@ function App() {
         getFiles().then(({ images, folders }) => {
             setAllImages(images);
             setFolders(folders);
-            setFolder(folders[0]);
+            setFolder(0); //~~(Math.random() * folders.length) For random folder
         });
     }, []);
 
     useEffect(() => {
         console.log(images, folders, folder);
-        if (folder) setImages(getImages(allImages, folder));
+        if (folder !== null) setImages(getImages(allImages, folders[folder]));
     }, [allImages, folder]);
 
     useEffect(() => {
@@ -128,11 +128,23 @@ function App() {
     }, [images, index]);
 
     const handlePrev = () => {
-        setIndex((index - 1 + images.length) % images.length);
+        if (index === 0) {
+            const newFolder = (folder - 1 + folders.length) % folders.length;
+            const newImages = getImages(allImages, folders[newFolder]);
+            setIndex(newImages.length - 1);
+            setFolder(newFolder);
+        } else {
+            setIndex((index - 1 + images.length) % images.length);
+        }
     };
 
     const handleNext = () => {
-        setIndex((index + 1) % images.length);
+        if (index === images.length - 1) {
+            setIndex(0);
+            setFolder((folder + 1 + folders.length) % folders.length);
+        } else {
+            setIndex((index + 1) % images.length);
+        }
     };
 
     return (
