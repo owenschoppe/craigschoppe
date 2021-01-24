@@ -31,6 +31,7 @@ const appStyle = css`
 
 const headerStyle = css`
     display: flex;
+    flex: 1 0 auto;
     justify-content: space-between;
     align-items: center;
     padding: 0 1rem;
@@ -46,14 +47,14 @@ const h1 = css`
 `;
 
 const galleryStyle = css`
-    position: relative;
     max-height: 100%;
     max-width: 100%;
+    min-height: 0;
+    min-width: 0;
     display: flex;
+    flex: 1 1 100%;
     justify-content: center;
     align-items: center;
-    flex: 1 1 auto;
-    min-height: 0;
     margin: 1rem 0;
     @media (min-width: 420px) {
         margin: 1rem;
@@ -66,6 +67,8 @@ const galleryStyle = css`
 const imageStyle = css`
     max-height: 100%;
     max-width: 100%;
+    display: block;
+    align-self: center;
 `;
 
 const instagramStyle = css`
@@ -81,11 +84,12 @@ const instagramStyle = css`
 `;
 
 const footerStyle = css`
+    display: flex;
+    flex: 1 0 auto;
+    justify-content: center;
     margin-left: 1rem;
     margin-right: 1rem;
     margin-bottom: 3rem;
-    display: flex;
-    justify-content: center;
     @media (min-width: 720px) {
         margin-left: 3rem;
         margin-right: 3rem;
@@ -163,6 +167,8 @@ function App() {
                         className={imageStyle}
                         src={`https://storage.googleapis.com/craigschoppe-images/${image.id}`}
                         alt={image.name}
+                        height=""
+                        width=""
                     />
                 ) : null}
             </div>
