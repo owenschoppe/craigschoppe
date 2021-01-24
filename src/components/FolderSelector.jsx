@@ -28,15 +28,12 @@ const buttonStyle = css`
 `;
 
 const FolderSelector = (props) => {
-    const { folder, folders, setFolder } = props;
+    const { folder, folders, setFolder, setIndex } = props;
 
     const handleClick = () => {
         setFolder((folder + 1 + folders.length) % folders.length);
+        setIndex(0);
     };
-
-    useEffect(() => {
-        console.log("folder", folder);
-    }, [folder]);
 
     const getButton = () => {
         return (

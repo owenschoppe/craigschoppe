@@ -158,6 +158,7 @@ function App() {
                     folder={folder}
                     folders={folders}
                     setFolder={setFolder}
+                    setIndex={setIndex}
                 />
                 <h1 className={h1}>by Craig Schoppe</h1>
             </header>
