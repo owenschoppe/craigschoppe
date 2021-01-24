@@ -105,6 +105,7 @@ const attributionStyle = css`
         align-items: center;
         width: 1.5rem;
         height: 1.5rem;
+        border-radius: 50%;
         &:hover,
         &:focus {
             outline: none;
