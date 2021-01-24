@@ -28,18 +28,13 @@ const buttonStyle = css`
 `;
 
 const FolderSelector = (props) => {
-    const { folder, folders, setFolder, setIndex } = props;
-
-    const handleClick = () => {
-        setFolder((folder + 1 + folders.length) % folders.length);
-        setIndex(0);
-    };
+    const { folder, folders, nextFolder } = props;
 
     const getButton = () => {
         return (
             <button
                 className={buttonStyle}
-                onClick={handleClick}
+                onClick={nextFolder}
                 title="Click to Change"
             >
                 <h1 className={h1}>{folders[folder].name.slice(0, -1)}</h1>

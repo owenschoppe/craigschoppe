@@ -111,8 +111,9 @@ function App() {
     const [folders, setFolders] = useState([]);
     const [folder, setFolder] = useState(null);
 
-    const [index, setIndex] = useState(0); //Make sticky?
+    const [index, setIndex] = useState(0); // Make sticky?
 
+    // Intialize app
     useEffect(() => {
         getFiles().then(({ images, folders }) => {
             setAllImages(images);
@@ -131,24 +132,32 @@ function App() {
         if (images) setImage(images[index]);
     }, [images, index]);
 
-    const handlePrev = () => {
+    const prevImage = () => {
         if (index === 0) {
-            const newFolder = (folder - 1 + folders.length) % folders.length;
-            const newImages = getImages(allImages, folders[newFolder]);
-            setIndex(newImages.length - 1);
-            setFolder(newFolder);
+            prevFolder();
         } else {
             setIndex((index - 1 + images.length) % images.length);
         }
     };
 
-    const handleNext = () => {
+    const nextImage = () => {
         if (index === images.length - 1) {
-            setIndex(0);
-            setFolder((folder + 1 + folders.length) % folders.length);
+            nextFolder();
         } else {
             setIndex((index + 1) % images.length);
         }
+    };
+
+    const prevFolder = () => {
+        const newFolder = (folder - 1 + folders.length) % folders.length;
+        const newImages = getImages(allImages, folders[newFolder]); //Can this be optimized away?
+        setIndex(newImages.length - 1);
+        setFolder(newFolder);
+    };
+
+    const nextFolder = () => {
+        setIndex(0);
+        setFolder((folder + 1 + folders.length) % folders.length);
     };
 
     return (
@@ -157,8 +166,7 @@ function App() {
                 <FolderSelector
                     folder={folder}
                     folders={folders}
-                    setFolder={setFolder}
-                    setIndex={setIndex}
+                    nextFolder={nextFolder}
                 />
                 <h1 className={h1}>by Craig Schoppe</h1>
             </header>
@@ -176,8 +184,8 @@ function App() {
             <div className={footerStyle}>
                 <Controls
                     image={image}
-                    handleNext={handleNext}
-                    handlePrev={handlePrev}
+                    handleNext={nextImage}
+                    handlePrev={prevImage}
                 >
                     <TitleBlock image={image} />
                 </Controls>
