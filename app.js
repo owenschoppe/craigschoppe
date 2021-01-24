@@ -39,6 +39,18 @@ app.set("trust proxy", true);
 // app.set("view engine", "pug");
 app.use(bodyParser.json());
 
+if (app.get("env") === "production") {
+    app.use(function (req, res, next) {
+        if (req.secure) {
+            // request was via https, so do no special handling
+            next();
+        } else {
+            // request was via http, so redirect to https
+            res.redirect("https://" + req.headers.host + req.url);
+        }
+    });
+}
+
 // Multer is required to process file uploads and make them available via
 // req.files.
 const multer = Multer({

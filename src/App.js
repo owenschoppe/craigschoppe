@@ -54,6 +54,7 @@ const galleryStyle = css`
     align-items: center;
     flex: 1 1 auto;
     min-height: 0;
+    margin: 1rem 0;
     @media (min-width: 420px) {
         margin: 1rem;
     }
