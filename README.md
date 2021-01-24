@@ -1,3 +1,7 @@
+## TODO
+* Consider setting up a google Cloud Run pipeline to automatically downsize large images.
+  * https://cloud.google.com/run/docs/tutorials/image-processing
+
 ## Structure
 * Images are stored in GCP Storage bucket
 * App is hosted on GCP App Engine

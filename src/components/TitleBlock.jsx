@@ -15,12 +15,15 @@ const TitleBlock = (props) => {
     return (
         <span className={title}>
             {image ? formatName(getNameFromPath(image.name)) : null}
+            {props.children}
         </span>
     );
 };
 
 const title = css`
     margin: 0 1rem;
+    display: flex;
+    align-items: center;
 `;
 
 export { TitleBlock };

@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from "react";
 import { css, cx } from "@emotion/css";
+import arrow from "../arrow.svg";
 
 const controlsStyle = css`
     font-family: "Poppins", sans-serif;
@@ -25,8 +26,19 @@ const button = css`
     }
 `;
 
-const prev = css``;
-const next = css``;
+const prev = css`
+    transform: rotate(180deg);
+    justify-self: center;
+    align-self: center;
+    width: 20px;
+    height: 20px;
+`;
+const next = css`
+    justify-self: center;
+    align-self: center;
+    width: 20px;
+    height: 20px;
+`;
 
 const Controls = (props) => {
     const { image, handleNext, handlePrev } = props;
@@ -51,19 +63,19 @@ const Controls = (props) => {
     return (
         <div className={controlsStyle}>
             <button
-                className={cx(button, prev)}
+                className={cx(button)}
                 onClick={handlePrev}
                 title="Click to Go Back"
             >
-                ← <span className="assistiveText">Previous Photo</span>
+                <img src={arrow} className={prev} alt="Previous Photo" />
             </button>
             {props.children}
             <button
-                className={cx(button, next)}
+                className={cx(button)}
                 onClick={handleNext}
                 title="Click to Advance"
             >
-                → <span className="assistiveText">Next Photo</span>
+                <img src={arrow} className={next} alt="Next Photo" />
             </button>
         </div>
     );

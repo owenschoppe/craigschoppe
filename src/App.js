@@ -5,6 +5,7 @@ import { FolderSelector } from "./components/FolderSelector";
 import { TitleBlock } from "./components/TitleBlock";
 import { css } from "@emotion/css";
 import ig from "./instagram.png";
+import cc from "./creative-commons.svg";
 
 const getFiles = async () => {
     const data = await (await fetch("/files")).json();
@@ -89,7 +90,7 @@ const footerStyle = css`
     justify-content: center;
     margin-left: 1rem;
     margin-right: 1rem;
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
     @media (min-width: 720px) {
         margin-left: 3rem;
         margin-right: 3rem;
@@ -97,11 +98,24 @@ const footerStyle = css`
 `;
 
 const attributionStyle = css`
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    display: flex;
-    align-items: center;
+    margin-left: 0.5rem;
+    & > a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        &:hover,
+        &:focus {
+            outline: none;
+            border: none;
+            box-shadow: 0 0 0 1px white;
+        }
+        & img {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+    }
 `;
 
 function App() {
@@ -189,39 +203,36 @@ function App() {
                     handleNext={nextImage}
                     handlePrev={prevImage}
                 >
-                    <TitleBlock image={image} />
+                    <TitleBlock image={image}>
+                        {image ? (
+                            <div className={attributionStyle}>
+                                <a
+                                    rel="license"
+                                    href="http://creativecommons.org/licenses/by-nc-nd/4.0/"
+                                >
+                                    <img
+                                        alt="Creative Commons License"
+                                        style={{ borderWidth: 0 }}
+                                        src={cc}
+                                    />
+                                    <span className="assistiveText">
+                                        This work is licensed under a Creative
+                                        Commons
+                                        Attribution-NonCommercial-NoDerivatives
+                                        4.0 International License.
+                                    </span>
+                                </a>
+                            </div>
+                        ) : null}
+                    </TitleBlock>
                 </Controls>
-                <div className={attributionStyle}>
-                    <a
-                        rel="license"
-                        href="http://creativecommons.org/licenses/by-nc-nd/4.0/"
-                    >
-                        <img
-                            alt="Creative Commons License"
-                            style={{ borderWidth: 0 }}
-                            src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png"
-                        />
-                    </a>
-                    <span className="assistiveText">
-                        This work is licensed under a{" "}
-                        <a
-                            rel="license"
-                            href="http://creativecommons.org/licenses/by-nc-nd/4.0/"
-                        >
-                            Creative Commons
-                            Attribution-NonCommercial-NoDerivatives 4.0
-                            International License
-                        </a>
-                        .
-                    </span>
-                    {/* <a
+            </div>
+            {/* <a
                         className={instagramStyle}
                         href="https://www.instagram.com/wood_by_schoppe/"
                     >
                         <span className="assistiveText">Instagram</span>
                     </a> */}
-                </div>
-            </div>
         </div>
     );
 }
