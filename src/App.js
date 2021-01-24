@@ -174,8 +174,10 @@ function App() {
                 {image ? (
                     <img
                         className={imageStyle}
+                        srcset={`https://storage.googleapis.com/craigschoppe-images/${image.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${image.id} 800w,`}
+                        sizes="100vw"
                         src={`https://storage.googleapis.com/craigschoppe-images/${image.id}`}
-                        alt={image.name}
+                        alt={`${image.name}, a photograph by Craig Schoppe.`}
                         height=""
                         width=""
                     />

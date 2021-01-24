@@ -1,32 +1,13 @@
-# Node.js Google Cloud Storage sample for Google App Engine
+## Structure
+* Images are stored in GCP Storage bucket
+* App is hosted on GCP App Engine
+* Uses an Express server to create routes for getting image metadata and serve the React client app
+* React client app presents the images in a gallery.
 
-This sample demonstrates how to use [Google Cloud Storage](https://cloud.google.com/storage/)
-on [Google App Engine flexible environment](https://cloud.google.com/appengine).
-
-## Setup
-
-Before you can run or deploy the sample, you will need to do the following:
-
-1. Enable the Cloud Storage API in the [Google Developers Console](https://console.developers.google.com/project/_/apiui/apiview/storage/overview).
-
-1. Create a Cloud Storage Bucket. You can do this with the [Google Cloud SDK](https://cloud.google.com/sdk)
-with the following command:
-
-        gsutil mb gs://<your-bucket-name>
-
-1. Set the default ACL on your bucket to public read in order to serve files
-directly from Cloud Storage. You can do this with the [Google Cloud SDK](https://cloud.google.com/sdk)
-with the following command:
-
-        gsutil defacl set public-read gs://<your-bucket-name>
-
-1. Update the environment variables in `app.yaml`.
-
-## Running locally
-
-Refer to the [top-level README](../../README.md) for instructions on running and
-deploying.
-
+## Storage
+Set the default sharing policy to public:
+`gsutil defacl set public-read gs://[YOUR_BUCKET_NAME]`
+## Local Dev
 When running locally, you can use the [Google Cloud SDK](https://cloud.google.com/sdk)
 to provide authentication to use Google Cloud APIs:
 
@@ -40,10 +21,11 @@ Then set environment variables before starting your application:
     npm install
     npm start
 
+## Deploy
 Then build locally before deploying:
 
     npm run-script build
     gcloud app deploy
 
-
-        
+## Images
+Images are stored on Google Cloud storage in a bucket. Multiple buckets are used for performant images.
