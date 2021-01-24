@@ -66,7 +66,11 @@ app.get("/files", (req, res) => {
     listFilesPaginated()
         .then((data) => {
             // console.log(data);
-            res.json(data);
+            res.json([
+                data[0].map((d) => {
+                    return { id: d.id, name: d.name };
+                }),
+            ]);
         })
         .catch(console.error);
 });
