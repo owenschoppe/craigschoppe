@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { css, cx } from "@emotion/css";
 import arrow from "../arrow.svg";
 
