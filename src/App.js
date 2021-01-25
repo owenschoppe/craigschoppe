@@ -42,7 +42,7 @@ const headerStyle = css`
 `;
 
 const h1 = css`
-    margin: 1rem 0;
+    margin: 0;
     font-size: 1.25rem;
     @media (min-width: 375px) {
         font-size: 1.5rem;

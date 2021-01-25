@@ -5,7 +5,7 @@ const buttonStyle = css`
     font-family: "Cormorant Garamond", serif;
     font-size: inherit;
     font-weight: inherit;
-    padding: 0;
+    padding: 1rem 0;
     outline: none;
     background: none;
     border: none;
