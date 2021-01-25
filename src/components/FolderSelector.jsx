@@ -30,7 +30,9 @@ const FolderSelector = (props) => {
                 onClick={nextFolder}
                 title="Click to Change"
             >
-                {folders[folder].name.slice(0, -1)}
+                {folders.length && folder !== null
+                    ? folders[folder].name.slice(0, -1)
+                    : null}
             </button>
         );
     };

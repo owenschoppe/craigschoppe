@@ -4,23 +4,9 @@ import { Controls } from "./components/Controls";
 import { FolderSelector } from "./components/FolderSelector";
 import { TitleBlock } from "./components/TitleBlock";
 import { Attribution } from "./components/Attribution";
+import { useStickyState } from "./components/useStickyState";
 import { css, cx } from "@emotion/css";
 import ig from "./instagram.png";
-
-const getFiles = async () => {
-    const data = await (await fetch("/files")).json();
-
-    const images = data[0].filter((file) => file.name.slice(-1) !== "/"); //Filter out folders
-    // .map((file) => file.id);
-    const folders = data[0].filter((file) => file.name.slice(-1) === "/"); //Find folders
-    // .map((folder) => folder.id);
-    console.log(data, images, folders);
-    return { images, folders };
-};
-
-const getImages = (images, folder) => {
-    return images.filter((image) => image.id.startsWith(folder.id));
-};
 
 const appStyle = css`
     background-color: black;
@@ -111,31 +97,46 @@ const footerStyle = css`
     }
 `;
 
+const getFiles = async () => {
+    const data = await (await fetch("/files")).json();
+    const images = data[0].filter((file) => file.name.slice(-1) !== "/"); //Filter out folders
+    const folders = data[0].filter((file) => file.name.slice(-1) === "/"); //Find folders
+    // console.log(data, images, folders);
+    return { images, folders };
+};
+
+const getImages = (images, folder) => {
+    return images.filter((image) => image.id.startsWith(folder.id));
+};
+
 function App() {
     const [allImages, setAllImages] = useState([]);
     const [images, setImages] = useState([]);
     const [image, setImage] = useState(null);
     const [folders, setFolders] = useState([]);
-    const [folder, setFolder] = useState(null);
 
-    const [index, setIndex] = useState(0); // Make sticky?
+    // const [folder, setFolder] = useStickyState(null, "folder");
+    // const [index, setIndex] = useStickyState(0, "index");
+    const [folder, setFolder] = useState(null);
+    const [index, setIndex] = useState(0);
 
     // Intialize app
     useEffect(() => {
         getFiles().then(({ images, folders }) => {
             setAllImages(images);
             setFolders(folders);
-            setFolder(~~(Math.random() * folders.length)); // For random folder
+            if (folder === null) setFolder(~~(Math.random() * folders.length)); // For initial random folder
         });
     }, []);
 
     useEffect(() => {
-        console.log(images, folders, folder);
-        if (folder !== null) setImages(getImages(allImages, folders[folder]));
-    }, [allImages, folder]);
+        // console.log(allImages, folders, folder);
+        if (folders.length && folder !== null)
+            setImages(getImages(allImages, folders[folder]));
+    }, [allImages, folders, folder]);
 
     useEffect(() => {
-        console.log(images, index);
+        // console.log(images, index);
         if (images) setImage(images[index]);
     }, [images, index]);
 
