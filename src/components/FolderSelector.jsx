@@ -3,7 +3,10 @@ import { css } from "@emotion/css";
 
 const h1 = css`
     margin: 1rem 0;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    @media (min-width: 375px) {
+        font-size: 1.5rem;
+    }
     @media (min-width: 420px) {
         font-size: 2rem;
     }
@@ -13,6 +16,7 @@ const buttonStyle = css`
     color: white;
     font-family: "Cormorant Garamond", serif;
     font-size: 16px;
+    padding: 0;
     outline: none;
     background: none;
     border: none;

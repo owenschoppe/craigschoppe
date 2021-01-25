@@ -3,7 +3,7 @@ import "./App.css";
 import { Controls } from "./components/Controls";
 import { FolderSelector } from "./components/FolderSelector";
 import { TitleBlock } from "./components/TitleBlock";
-import { css } from "@emotion/css";
+import { css, cx } from "@emotion/css";
 import ig from "./instagram.png";
 import cc from "./creative-commons.svg";
 
@@ -35,16 +35,26 @@ const headerStyle = css`
     flex: 1 0 auto;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1rem;
+    padding: 0;
+    padding-left: 1rem;
+    padding-right: 0.125rem;
     font-family: "Cormorant Garamond", serif;
 `;
 
 const h1 = css`
     margin: 1rem 0;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    @media (min-width: 375px) {
+        font-size: 1.5rem;
+    }
     @media (min-width: 420px) {
         font-size: 2rem;
     }
+`;
+
+const name = css`
+    flex: 0 0 auto;
+    margin-left: 0.125rem;
 `;
 
 const galleryStyle = css`
@@ -68,6 +78,10 @@ const galleryStyle = css`
 const imageStyle = css`
     max-height: 100%;
     max-width: 100%;
+    width: 100%;
+    @media (min-width: 720px) {
+        width: auto;
+    }
     display: block;
     align-self: center;
 `;
@@ -98,7 +112,8 @@ const footerStyle = css`
 `;
 
 const attributionStyle = css`
-    margin-left: 0.5rem;
+    margin-left: 0.125rem;
+    display: inline-block;
     & > a {
         display: flex;
         justify-content: center;
@@ -183,15 +198,34 @@ function App() {
                     folders={folders}
                     nextFolder={nextFolder}
                 />
-                <h1 className={h1}>by Craig Schoppe</h1>
+                <h1 className={cx(h1, name)}>
+                    by Craig Schoppe
+                    <span className={attributionStyle}>
+                        <a
+                            rel="license"
+                            href="http://creativecommons.org/licenses/by-nc-nd/4.0/"
+                        >
+                            <img
+                                alt="Creative Commons License"
+                                style={{ borderWidth: 0 }}
+                                src={cc}
+                            />
+                            <span className="assistiveText">
+                                This work is licensed under a Creative Commons
+                                Attribution-NonCommercial-NoDerivatives 4.0
+                                International License.
+                            </span>
+                        </a>
+                    </span>
+                </h1>
             </header>
             <div className={galleryStyle}>
                 {image ? (
                     <img
                         className={imageStyle}
-                        srcset={`https://storage.googleapis.com/craigschoppe-images/${image.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${image.id} 800w,`}
                         sizes="100vw"
                         src={`https://storage.googleapis.com/craigschoppe-images/${image.id}`}
+                        srcset={`https://storage.googleapis.com/craigschoppe-images/${image.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${image.id} 800w`}
                         alt={`${image.name}, a photograph by Craig Schoppe.`}
                         height=""
                         width=""
@@ -205,26 +239,9 @@ function App() {
                     handlePrev={prevImage}
                 >
                     <TitleBlock image={image}>
-                        {image ? (
-                            <div className={attributionStyle}>
-                                <a
-                                    rel="license"
-                                    href="http://creativecommons.org/licenses/by-nc-nd/4.0/"
-                                >
-                                    <img
-                                        alt="Creative Commons License"
-                                        style={{ borderWidth: 0 }}
-                                        src={cc}
-                                    />
-                                    <span className="assistiveText">
-                                        This work is licensed under a Creative
-                                        Commons
-                                        Attribution-NonCommercial-NoDerivatives
-                                        4.0 International License.
-                                    </span>
-                                </a>
-                            </div>
-                        ) : null}
+                        {/* {image ? (
+                            
+                        ) : null} */}
                     </TitleBlock>
                 </Controls>
             </div>
