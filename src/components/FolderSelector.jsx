@@ -1,21 +1,10 @@
-import { useEffect } from "react";
 import { css } from "@emotion/css";
-
-const h1 = css`
-    margin: 1rem 0;
-    font-size: 1.25rem;
-    @media (min-width: 375px) {
-        font-size: 1.5rem;
-    }
-    @media (min-width: 420px) {
-        font-size: 2rem;
-    }
-`;
 
 const buttonStyle = css`
     color: white;
     font-family: "Cormorant Garamond", serif;
-    font-size: 16px;
+    font-size: inherit;
+    font-weight: inherit;
     padding: 0;
     outline: none;
     background: none;
@@ -41,7 +30,7 @@ const FolderSelector = (props) => {
                 onClick={nextFolder}
                 title="Click to Change"
             >
-                <h1 className={h1}>{folders[folder].name.slice(0, -1)}</h1>
+                {folders[folder].name.slice(0, -1)}
             </button>
         );
     };
