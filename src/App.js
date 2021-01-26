@@ -57,7 +57,7 @@ const galleryStyle = css`
     justify-content: center;
     align-items: center;
     margin: 1rem 0;
-    touch-action: auto;
+    touch-action: pan-x pan-y;
     position: relative;
     left: 0;
     @media (min-width: 420px) {
