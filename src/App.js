@@ -16,7 +16,7 @@ const appStyle = css`
     height: 100vh;
     flex-direction: column;
     overflow: hidden;
-    touch-action: none;
+    touch-action: pan-y;
 `;
 
 const headerStyle = css`
@@ -57,7 +57,7 @@ const galleryStyle = css`
     justify-content: center;
     align-items: center;
     margin: 1rem 0;
-    touch-action: pan-x;
+    touch-action: auto;
     position: relative;
     left: 0;
     @media (min-width: 420px) {
@@ -138,13 +138,11 @@ function App() {
     };
     const handlers = useSwipeable({
         onSwiped: (eventData) => {
-            console.log("User Swiped!", eventData);
             setLeft(0);
         },
         onSwipedLeft: () => nextImage(), // After LEFT swipe  (SwipeEventData) => void
         onSwipedRight: () => prevImage(), // After RIGHT swipe (SwipeEventData) => void
         onSwiping: (eventData) => {
-            console.log("User Swiping!", eventData);
             setLeft(eventData.deltaX);
         },
         ...config,
@@ -160,13 +158,11 @@ function App() {
     }, [folder]);
 
     useEffect(() => {
-        // console.log(allImages, folders, folder);
         if (folders.length && folder !== null)
             setImages(getImages(allImages, folders[folder]));
     }, [allImages, folders, folder]);
 
     useEffect(() => {
-        // console.log(images, index);
         if (images) setImage(images[index]);
     }, [images, index]);
 
