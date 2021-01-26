@@ -16,7 +16,7 @@ const appStyle = css`
     height: 100vh;
     flex-direction: column;
     overflow: hidden;
-    touch-action: pan-y pinch-zoom;
+    touch-action: pan-y;
 `;
 
 const headerStyle = css`
