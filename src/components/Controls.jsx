@@ -67,7 +67,7 @@ const Controls = (props) => {
                 onClick={handlePrev}
                 title="Click to Go Back"
             >
-                <img src={arrow} className={prev} alt="Previous Photo" />
+                <img src={arrow} className={prev} alt="Previous" />
             </button>
             {props.children}
             <button
@@ -75,7 +75,7 @@ const Controls = (props) => {
                 onClick={handleNext}
                 title="Click to Advance"
             >
-                <img src={arrow} className={next} alt="Next Photo" />
+                <img src={arrow} className={next} alt="Next" />
             </button>
         </div>
     );

@@ -4,9 +4,9 @@ import { Controls } from "./components/Controls";
 import { FolderSelector } from "./components/FolderSelector";
 import { TitleBlock } from "./components/TitleBlock";
 import { Attribution } from "./components/Attribution";
-import { useStickyState } from "./components/useStickyState";
+// import { useStickyState } from "./components/useStickyState";
 import { css, cx } from "@emotion/css";
-import ig from "./instagram.png";
+// import ig from "./instagram.png";
 
 const appStyle = css`
     background-color: black;
@@ -72,17 +72,17 @@ const imageStyle = css`
     align-self: center;
 `;
 
-const instagramStyle = css`
-    width: 24px;
-    height: 24px;
-    content: "";
-    display: block;
-    background-image: url(${ig});
-    filter: invert(100%);
-    background-size: contain;
-    background-repeat: no-repeat;
-    margin-left: 0.25rem;
-`;
+// const instagramStyle = css`
+//     width: 24px;
+//     height: 24px;
+//     content: "";
+//     display: block;
+//     background-image: url(${ig});
+//     filter: invert(100%);
+//     background-size: contain;
+//     background-repeat: no-repeat;
+//     margin-left: 0.25rem;
+// `;
 
 const footerStyle = css`
     display: flex;
@@ -127,7 +127,7 @@ function App() {
             setFolders(folders);
             if (folder === null) setFolder(~~(Math.random() * folders.length)); // For initial random folder
         });
-    }, []);
+    }, [folder]);
 
     useEffect(() => {
         // console.log(allImages, folders, folder);
@@ -188,7 +188,7 @@ function App() {
                         sizes="100vw"
                         src={`https://storage.googleapis.com/craigschoppe-images/${image.id}`}
                         srcset={`https://storage.googleapis.com/craigschoppe-images/${image.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${image.id} 800w`}
-                        alt={`${image.name}, a photograph by Craig Schoppe.`}
+                        alt={`${image.name}, by Craig Schoppe.`}
                         height=""
                         width=""
                     />

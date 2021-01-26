@@ -17,13 +17,9 @@ to provide authentication to use Google Cloud APIs:
 
     gcloud init
 
-Then set environment variables before starting your application:
+Start the server using `npm run-script start:local`. This sets the appropriate gcloud environment variables.
 
-    //`gcloud config set project my-project`
-    export GOOGLE_CLOUD_PROJECT=<your-project-id>
-    export GCLOUD_STORAGE_BUCKET=<your-bucket-name>
-    npm install
-    npm start
+And start the react app in dev mode using `npm run-script start:react`. This includes a proxy to call the correct local server, and still has hot reloading.
 
 ## Deploy
 Then build locally before deploying:
