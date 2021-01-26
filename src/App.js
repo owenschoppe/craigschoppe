@@ -7,6 +7,7 @@ import { Attribution } from "./components/Attribution";
 // import { useStickyState } from "./components/useStickyState";
 import { css, cx } from "@emotion/css";
 // import ig from "./instagram.png";
+import { useSwipeable } from "react-swipeable";
 
 const appStyle = css`
     background-color: black;
@@ -14,6 +15,8 @@ const appStyle = css`
     display: flex;
     height: 100vh;
     flex-direction: column;
+    overflow: hidden;
+    touch-action: none;
 `;
 
 const headerStyle = css`
@@ -30,6 +33,7 @@ const headerStyle = css`
 const h1 = css`
     margin: 0;
     font-size: 1.25rem;
+    user-select: none;
     @media (min-width: 375px) {
         font-size: 1.5rem;
     }
@@ -53,6 +57,9 @@ const galleryStyle = css`
     justify-content: center;
     align-items: center;
     margin: 1rem 0;
+    touch-action: pan-x;
+    position: relative;
+    left: 0;
     @media (min-width: 420px) {
         margin: 1rem;
     }
@@ -120,6 +127,29 @@ function App() {
     const [folder, setFolder] = useState(null);
     const [index, setIndex] = useState(0);
 
+    const [left, setLeft] = useState(0);
+
+    const config = {
+        delta: 10, // min distance(px) before a swipe starts
+        preventDefaultTouchmoveEvent: false, // call e.preventDefault *See Details*
+        trackTouch: true, // track touch input
+        trackMouse: false, // track mouse input
+        rotationAngle: 0, // set a rotation angle
+    };
+    const handlers = useSwipeable({
+        onSwiped: (eventData) => {
+            console.log("User Swiped!", eventData);
+            setLeft(0);
+        },
+        onSwipedLeft: () => nextImage(), // After LEFT swipe  (SwipeEventData) => void
+        onSwipedRight: () => prevImage(), // After RIGHT swipe (SwipeEventData) => void
+        onSwiping: (eventData) => {
+            console.log("User Swiping!", eventData);
+            setLeft(eventData.deltaX);
+        },
+        ...config,
+    });
+
     // Intialize app
     useEffect(() => {
         getFiles().then(({ images, folders }) => {
@@ -181,7 +211,15 @@ function App() {
                     <Attribution />
                 </span>
             </h1>
-            <div className={galleryStyle}>
+            <div
+                className={cx(
+                    galleryStyle,
+                    css`
+                        left: ${left}px;
+                    `
+                )}
+                {...handlers}
+            >
                 {image ? (
                     <img
                         className={imageStyle}

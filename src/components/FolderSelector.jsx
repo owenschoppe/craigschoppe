@@ -10,6 +10,8 @@ const buttonStyle = css`
     background: none;
     border: none;
     border-bottom: 1px solid white;
+    user-select: none;
+    cursor: pointer;
     &:hover {
         outline: none;
         box-shadow: 0 1px 0 0 white;

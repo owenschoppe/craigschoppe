@@ -16,6 +16,8 @@ const button = css`
     color: white;
     background: none;
     border: none;
+    user-select: none;
+    cursor: pointer;
     &:hover {
         outline: none;
         border: 1px solid #ccc;
