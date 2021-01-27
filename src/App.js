@@ -104,6 +104,42 @@ const footerStyle = css`
     }
 `;
 
+const loader = css`
+    flex: none;
+    left: 0px;
+    height: 16px;
+    width: 0px;
+    margin-left: 0;
+    box-shadow: 0 -1px 0 0 white;
+`;
+
+const loaderKeyframes = keyframes`
+        from {
+          margin-left: 0;
+          width: 0px;
+        }
+
+        49% {
+          margin-left: 0;
+          width: 100%;
+        }
+        50% {
+          margin-left: auto;
+          width: 100%;
+        }
+
+        to {
+          margin-left: auto;
+          width: 0px;
+        }
+    `;
+
+const loaderAnimation = css`
+    animation: ${loaderKeyframes} 10s ease-out infinite;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+`;
+
 const getFiles = async () => {
     const data = await (await fetch("/files")).json();
     const images = data[0].filter((file) => file.name.slice(-1) !== "/"); //Filter out folders
@@ -129,6 +165,7 @@ function App() {
 
     const [left, setLeft] = useState(0);
     const [animationStyle, setAnimationStyle] = useState("");
+    const [loaderStyle, setLoaderStyle] = useState("");
 
     const config = {
         delta: 10, // min distance(px) before a swipe starts
@@ -215,9 +252,11 @@ function App() {
     const resetGallery = () => {
         setAnimationStyle("");
         setLeft(0);
+        setLoaderStyle("");
     };
 
     const prevImage = () => {
+        setLoaderStyle(loaderAnimation);
         if (index === 0) {
             prevFolder();
         } else {
@@ -226,6 +265,7 @@ function App() {
     };
 
     const nextImage = () => {
+        setLoaderStyle(loaderAnimation);
         if (index === images.length - 1) {
             nextFolder();
         } else {
@@ -277,6 +317,7 @@ function App() {
                     />
                 ) : null}
             </div>
+            <div className={cx(loader, loaderStyle)} />
             <div className={footerStyle}>
                 <Controls
                     image={image}
