@@ -135,7 +135,7 @@ const loaderKeyframes = keyframes`
     `;
 
 const loaderAnimation = css`
-    animation: ${loaderKeyframes} 10s ease-out infinite;
+    animation: ${loaderKeyframes} 10s ease-out infinite 0.25s;
     animation-fill-mode: forwards;
     animation-direction: normal;
 `;
