@@ -5,7 +5,7 @@ import { FolderSelector } from "./components/FolderSelector";
 import { TitleBlock } from "./components/TitleBlock";
 import { Attribution } from "./components/Attribution";
 // import { useStickyState } from "./components/useStickyState";
-import { css, cx } from "@emotion/css";
+import { css, cx, keyframes } from "@emotion/css";
 // import ig from "./instagram.png";
 import { useSwipeable } from "react-swipeable";
 
@@ -128,6 +128,7 @@ function App() {
     const [index, setIndex] = useState(0);
 
     const [left, setLeft] = useState(0);
+    const [animationStyle, setAnimationStyle] = useState("");
 
     const config = {
         delta: 10, // min distance(px) before a swipe starts
@@ -136,17 +137,60 @@ function App() {
         trackMouse: false, // track mouse input
         rotationAngle: 0, // set a rotation angle
     };
+
     const handlers = useSwipeable({
         onSwiped: (eventData) => {
-            setLeft(0);
+            // setLeft(0);
         },
-        onSwipedLeft: () => nextImage(), // After LEFT swipe  (SwipeEventData) => void
-        onSwipedRight: () => prevImage(), // After RIGHT swipe (SwipeEventData) => void
+        onSwipedLeft: () => {
+            nextImage();
+            setAnimationStyle(animateLeft);
+        }, // After LEFT swipe  (SwipeEventData) => void
+        onSwipedRight: () => {
+            prevImage();
+            setAnimationStyle(animateRight);
+        }, // After RIGHT swipe (SwipeEventData) => void
         onSwiping: (eventData) => {
             setLeft(eventData.deltaX);
         },
         ...config,
     });
+
+    const swipeStyle = css`
+        left: ${left}px;
+    `;
+
+    const slideLeft = keyframes`
+        from {
+          left: ${left}px;
+        }
+
+        to {
+          left: -100%;
+        }
+    `;
+
+    const animateLeft = css`
+        animation: ${slideLeft} 1s ease-out 1;
+        animation-fill-mode: forwards;
+        animation-direction: normal;
+    `;
+
+    const slideRight = keyframes`
+        from {
+          left: ${left}px;
+        }
+
+        to {
+          left: 100%;
+        }
+    `;
+
+    const animateRight = css`
+        animation: ${slideRight} 1s ease-out 1;
+        animation-fill-mode: forwards;
+        animation-direction: normal;
+    `;
 
     // Intialize app
     useEffect(() => {
@@ -163,8 +207,15 @@ function App() {
     }, [allImages, folders, folder]);
 
     useEffect(() => {
-        if (images) setImage(images[index]);
+        if (images) {
+            setImage(images[index]);
+        }
     }, [images, index]);
+
+    const resetGallery = () => {
+        setAnimationStyle("");
+        setLeft(0);
+    };
 
     const prevImage = () => {
         if (index === 0) {
@@ -208,23 +259,21 @@ function App() {
                 </span>
             </h1>
             <div
-                className={cx(
-                    galleryStyle,
-                    css`
-                        left: ${left}px;
-                    `
-                )}
+                className={cx(galleryStyle, swipeStyle, animationStyle)}
                 {...handlers}
             >
                 {image ? (
                     <img
-                        className={imageStyle}
+                        className={cx(imageStyle)}
                         sizes="100vw"
                         src={`https://storage.googleapis.com/craigschoppe-images/${image.id}`}
                         srcset={`https://storage.googleapis.com/craigschoppe-images/${image.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${image.id} 800w`}
                         alt={`${image.name}, by Craig Schoppe.`}
                         height=""
                         width=""
+                        onLoad={
+                            resetGallery //The problem is that the image index updates, and then the browser tries to fetch the image.
+                        }
                     />
                 ) : null}
             </div>
