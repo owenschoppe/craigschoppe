@@ -86,8 +86,6 @@ const Gallery = (props) => {
                     src={`https://storage.googleapis.com/craigschoppe-images/${image.id}`}
                     srcset={`https://storage.googleapis.com/craigschoppe-images/${image.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${image.id} 800w`}
                     alt={`${image.name}, by Craig Schoppe.`}
-                    height=""
-                    width=""
                     onLoad={
                         resetGallery //The problem is that the image index updates, and then the browser tries to fetch the image.
                     }
@@ -123,8 +121,7 @@ const galleryStyle = css`
 const imageStyle = css`
     max-height: 100%;
     max-width: 100%;
-    width: auto;
-    height: auto;
+    width: 100%;
+    object-fit: contain;
     display: block;
-    align-self: center;
 `;
