@@ -5,146 +5,15 @@ import { FolderSelector } from "./components/FolderSelector";
 import { TitleBlock } from "./components/TitleBlock";
 import { Attribution } from "./components/Attribution";
 // import { useStickyState } from "./components/useStickyState";
-import { css, cx, keyframes } from "@emotion/css";
+import { css, cx } from "@emotion/css";
 // import ig from "./instagram.png";
-import { useSwipeable } from "react-swipeable";
-
-const appStyle = css`
-    background-color: black;
-    color: white;
-    display: flex;
-    height: 100vh;
-    flex-direction: column;
-    overflow: hidden;
-    touch-action: pan-y;
-`;
-
-const headerStyle = css`
-    display: flex;
-    flex: 1 0 auto;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0;
-    padding-left: 1rem;
-    padding-right: 0.125rem;
-    font-family: "Cormorant Garamond", serif;
-`;
-
-const h1 = css`
-    margin: 0;
-    font-size: 1.25rem;
-    user-select: none;
-    @media (min-width: 375px) {
-        font-size: 1.5rem;
-    }
-    @media (min-width: 420px) {
-        font-size: 2rem;
-    }
-`;
-
-const name = css`
-    flex: 0 0 auto;
-    margin-left: 0.125rem;
-`;
-
-const galleryStyle = css`
-    max-height: 100%;
-    max-width: 100%;
-    min-height: 0;
-    min-width: 0;
-    display: flex;
-    flex: 1 1 100%;
-    justify-content: center;
-    align-items: center;
-    margin: 1rem 0;
-    touch-action: pan-x pan-y;
-    position: relative;
-    left: 0;
-    @media (min-width: 420px) {
-        margin: 1rem;
-    }
-    @media (min-width: 720px) {
-        margin: 3rem;
-    }
-`;
-
-const imageStyle = css`
-    max-height: 100%;
-    max-width: 100%;
-    width: 100%;
-    @media (min-width: 720px) {
-        width: auto;
-    }
-    display: block;
-    align-self: center;
-`;
-
-// const instagramStyle = css`
-//     width: 24px;
-//     height: 24px;
-//     content: "";
-//     display: block;
-//     background-image: url(${ig});
-//     filter: invert(100%);
-//     background-size: contain;
-//     background-repeat: no-repeat;
-//     margin-left: 0.25rem;
-// `;
-
-const footerStyle = css`
-    display: flex;
-    flex: 1 0 auto;
-    justify-content: center;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    margin-bottom: 1rem;
-    @media (min-width: 720px) {
-        margin-left: 3rem;
-        margin-right: 3rem;
-    }
-`;
-
-const loader = css`
-    flex: none;
-    left: 0px;
-    height: 16px;
-    width: 0px;
-    margin-left: 0;
-    box-shadow: 0 -1px 0 0 white;
-`;
-
-const loaderKeyframes = keyframes`
-        from {
-          margin-left: 0;
-          width: 0px;
-        }
-
-        49% {
-          margin-left: 0;
-          width: 100%;
-        }
-        50% {
-          margin-left: auto;
-          width: 100%;
-        }
-
-        to {
-          margin-left: auto;
-          width: 0px;
-        }
-    `;
-
-const loaderAnimation = css`
-    animation: ${loaderKeyframes} 10s ease-out infinite 0.25s;
-    animation-fill-mode: forwards;
-    animation-direction: normal;
-`;
+import { Gallery } from "./components/Gallery";
+import { Loader } from "./components/Loader";
 
 const getFiles = async () => {
     const data = await (await fetch("/files")).json();
     const images = data[0].filter((file) => file.name.slice(-1) !== "/"); //Filter out folders
     const folders = data[0].filter((file) => file.name.slice(-1) === "/"); //Find folders
-    // console.log(data, images, folders);
     return { images, folders };
 };
 
@@ -163,71 +32,7 @@ function App() {
     const [folder, setFolder] = useState(null);
     const [index, setIndex] = useState(0);
 
-    const [left, setLeft] = useState(0);
-    const [animationStyle, setAnimationStyle] = useState("");
-    const [loaderStyle, setLoaderStyle] = useState("");
-
-    const config = {
-        delta: 10, // min distance(px) before a swipe starts
-        preventDefaultTouchmoveEvent: false, // call e.preventDefault *See Details*
-        trackTouch: true, // track touch input
-        trackMouse: false, // track mouse input
-        rotationAngle: 0, // set a rotation angle
-    };
-
-    const handlers = useSwipeable({
-        onSwiped: (eventData) => {
-            // setLeft(0);
-        },
-        onSwipedLeft: () => {
-            nextImage();
-            setAnimationStyle(animateLeft);
-        }, // After LEFT swipe  (SwipeEventData) => void
-        onSwipedRight: () => {
-            prevImage();
-            setAnimationStyle(animateRight);
-        }, // After RIGHT swipe (SwipeEventData) => void
-        onSwiping: (eventData) => {
-            setLeft(eventData.deltaX);
-        },
-        ...config,
-    });
-
-    const swipeStyle = css`
-        left: ${left}px;
-    `;
-
-    const slideLeft = keyframes`
-        from {
-          left: ${left}px;
-        }
-
-        to {
-          left: -100%;
-        }
-    `;
-
-    const animateLeft = css`
-        animation: ${slideLeft} 1s ease-out 1;
-        animation-fill-mode: forwards;
-        animation-direction: normal;
-    `;
-
-    const slideRight = keyframes`
-        from {
-          left: ${left}px;
-        }
-
-        to {
-          left: 100%;
-        }
-    `;
-
-    const animateRight = css`
-        animation: ${slideRight} 1s ease-out 1;
-        animation-fill-mode: forwards;
-        animation-direction: normal;
-    `;
+    const [loading, setLoading] = useState(false);
 
     // Intialize app
     useEffect(() => {
@@ -249,14 +54,8 @@ function App() {
         }
     }, [images, index]);
 
-    const resetGallery = () => {
-        setAnimationStyle("");
-        setLeft(0);
-        setLoaderStyle("");
-    };
-
     const prevImage = () => {
-        setLoaderStyle(loaderAnimation);
+        setLoading(true);
         if (index === 0) {
             prevFolder();
         } else {
@@ -265,7 +64,7 @@ function App() {
     };
 
     const nextImage = () => {
-        setLoaderStyle(loaderAnimation);
+        setLoading(true);
         if (index === images.length - 1) {
             nextFolder();
         } else {
@@ -298,26 +97,13 @@ function App() {
                     <Attribution />
                 </span>
             </h1>
-            <div
-                className={cx(galleryStyle, swipeStyle, animationStyle)}
-                {...handlers}
-            >
-                {image ? (
-                    <img
-                        className={cx(imageStyle)}
-                        sizes="100vw"
-                        src={`https://storage.googleapis.com/craigschoppe-images/${image.id}`}
-                        srcset={`https://storage.googleapis.com/craigschoppe-images/${image.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${image.id} 800w`}
-                        alt={`${image.name}, by Craig Schoppe.`}
-                        height=""
-                        width=""
-                        onLoad={
-                            resetGallery //The problem is that the image index updates, and then the browser tries to fetch the image.
-                        }
-                    />
-                ) : null}
-            </div>
-            <div className={cx(loader, loaderStyle)} />
+            <Gallery
+                image={image}
+                nextImage={nextImage}
+                prevImage={prevImage}
+                setLoading={setLoading}
+            />
+            <Loader loading={loading} />
             <div className={footerStyle}>
                 <Controls
                     image={image}
@@ -338,3 +124,67 @@ function App() {
 }
 
 export default App;
+
+const appStyle = css`
+    background-color: black;
+    color: white;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    overflow: hidden;
+    touch-action: pan-y;
+`;
+
+const headerStyle = css`
+    display: flex;
+    flex: 1 0 auto;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    padding-left: 1rem;
+    padding-right: 0.125rem;
+    font-family: "Cormorant Garamond", serif;
+`;
+
+const h1 = css`
+    margin: 0;
+    font-size: 1.25rem;
+    user-select: none;
+    @media (min-width: 740px) {
+        font-size: 1.5rem;
+    }
+    @media (min-width: 1024px) {
+        font-size: 2rem;
+    }
+`;
+
+const name = css`
+    padding: 1rem 0;
+    flex: 0 0 auto;
+    margin-left: 0.125rem;
+`;
+
+// const instagramStyle = css`
+//     width: 24px;
+//     height: 24px;
+//     content: "";
+//     display: block;
+//     background-image: url(${ig});
+//     filter: invert(100%);
+//     background-size: contain;
+//     background-repeat: no-repeat;
+//     margin-left: 0.25rem;
+// `;
+
+const footerStyle = css`
+    display: flex;
+    flex: 1 0 auto;
+    justify-content: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    @media (min-width: 720px) {
+        margin-left: 3rem;
+        margin-right: 3rem;
+    }
+`;
