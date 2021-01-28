@@ -3,7 +3,7 @@ import { css, cx } from "@emotion/css";
 import arrow from "../arrow.svg";
 
 const controlsStyle = css`
-    font-family: "Poppins", sans-serif;
+    font-family: "Poppins", Arial, sans-serif;
     display: flex;
     flex: 1 1 auto;
     justify-content: space-between;
@@ -69,7 +69,13 @@ const Controls = (props) => {
                 onClick={handlePrev}
                 title="Click to Go Back"
             >
-                <img src={arrow} className={prev} alt="Previous" />
+                <img
+                    src={arrow}
+                    className={prev}
+                    alt="Previous"
+                    width="20px"
+                    height="20px"
+                />
             </button>
             {props.children}
             <button
@@ -77,7 +83,13 @@ const Controls = (props) => {
                 onClick={handleNext}
                 title="Click to Advance"
             >
-                <img src={arrow} className={next} alt="Next" />
+                <img
+                    src={arrow}
+                    className={next}
+                    alt="Next"
+                    width="20px"
+                    height="20px"
+                />
             </button>
         </div>
     );

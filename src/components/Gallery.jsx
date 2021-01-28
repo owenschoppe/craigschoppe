@@ -84,8 +84,10 @@ const Gallery = (props) => {
                     className={cx(imageStyle)}
                     sizes="100vw"
                     src={`https://storage.googleapis.com/craigschoppe-images/${image.id}`}
-                    srcset={`https://storage.googleapis.com/craigschoppe-images/${image.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${image.id} 800w`}
+                    srcSet={`https://storage.googleapis.com/craigschoppe-images/${image.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${image.id} 800w`}
                     alt={`${image.name}, by Craig Schoppe.`}
+                    width="1920px"
+                    height="auto"
                     onLoad={
                         resetGallery //The problem is that the image index updates, and then the browser tries to fetch the image.
                     }

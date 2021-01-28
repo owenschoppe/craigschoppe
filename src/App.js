@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./App.css";
 import { Controls } from "./components/Controls";
 import { FolderSelector } from "./components/FolderSelector";
 import { TitleBlock } from "./components/TitleBlock";
@@ -143,7 +142,7 @@ const headerStyle = css`
     padding: 0;
     padding-left: 1rem;
     padding-right: 0.125rem;
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Cormorant Garamond", Georgia, serif;
 `;
 
 const h1 = css`

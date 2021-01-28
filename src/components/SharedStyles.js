@@ -1,11 +1,6 @@
-.App {
-    background-color: black;
-    color: white;
-    display: grid;
-    height: 100vh;
-}
+import { css } from "@emotion/css";
 
-.assistiveText {
+const assistiveText = css`
     position: absolute !important;
     margin: -1px !important;
     border: 0 !important;
@@ -16,4 +11,6 @@
     clip: rect(0 0 0 0) !important;
     text-transform: none !important;
     white-space: nowrap !important;
-}
+`;
+
+export { assistiveText };
