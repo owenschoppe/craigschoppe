@@ -22,6 +22,7 @@ const express = require("express");
 const path = require("path");
 const Multer = require("multer");
 const bodyParser = require("body-parser");
+const compression = require("compression");
 
 // By default, the client will authenticate using the service account file
 // specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable and use
@@ -36,8 +37,9 @@ const storage = new Storage();
 const app = express();
 app.set("trust proxy", true);
 
-// app.set("view engine", "pug");
 app.use(bodyParser.json());
+
+app.use(compression());
 
 if (app.get("env") === "production") {
     app.use(function (req, res, next) {
