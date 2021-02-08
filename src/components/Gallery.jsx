@@ -87,7 +87,7 @@ const Gallery = (props) => {
             className={cx(galleryStyle, swipeStyle, animationStyle)}
             {...handlers}
         >
-            {!loading && prevImage ? (
+            {prevImage ? (
                 <img
                     className={cx(imageStyle, prevStyle)}
                     sizes="100vw"
@@ -112,7 +112,7 @@ const Gallery = (props) => {
                     }
                 />
             ) : null}
-            {!loading && nextImage ? (
+            {nextImage ? (
                 <img
                     className={cx(imageStyle, nextStyle)}
                     sizes="100vw"
