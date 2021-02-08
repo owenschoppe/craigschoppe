@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { css, cx, keyframes } from "@emotion/css";
 import { useSwipeable } from "react-swipeable";
 
 const Gallery = (props) => {
-    const { image, nextImage, prevImage, setLoading } = props;
+    const {
+        image,
+        nextImage,
+        next,
+        prevImage,
+        prev,
+        loading,
+        setLoading,
+    } = props;
 
     const [left, setLeft] = useState(0);
     const [animationStyle, setAnimationStyle] = useState("");
@@ -25,11 +33,11 @@ const Gallery = (props) => {
     const handlers = useSwipeable({
         onSwiped: (eventData) => {},
         onSwipedLeft: (eventData) => {
-            nextImage();
+            next();
             setAnimationStyle(animateLeft);
         },
         onSwipedRight: (eventData) => {
-            prevImage();
+            prev();
             setAnimationStyle(animateRight);
         },
         onSwiping: (eventData) => {
@@ -79,6 +87,17 @@ const Gallery = (props) => {
             className={cx(galleryStyle, swipeStyle, animationStyle)}
             {...handlers}
         >
+            {!loading && prevImage ? (
+                <img
+                    className={cx(imageStyle, prevStyle)}
+                    sizes="100vw"
+                    src={`https://storage.googleapis.com/craigschoppe-images/${prevImage.id}`}
+                    srcSet={`https://storage.googleapis.com/craigschoppe-images/${prevImage.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${prevImage.id} 800w`}
+                    alt={`${prevImage.name}, by Craig Schoppe.`}
+                    width="1920px"
+                    height="auto"
+                />
+            ) : null}
             {image ? (
                 <img
                     className={cx(imageStyle)}
@@ -91,6 +110,17 @@ const Gallery = (props) => {
                     onLoad={
                         resetGallery //The problem is that the image index updates, and then the browser tries to fetch the image.
                     }
+                />
+            ) : null}
+            {!loading && nextImage ? (
+                <img
+                    className={cx(imageStyle, nextStyle)}
+                    sizes="100vw"
+                    src={`https://storage.googleapis.com/craigschoppe-images/${nextImage.id}`}
+                    srcSet={`https://storage.googleapis.com/craigschoppe-images/${nextImage.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${nextImage.id} 800w`}
+                    alt={`${nextImage.name}, by Craig Schoppe.`}
+                    width="1920px"
+                    height="auto"
                 />
             ) : null}
         </div>
@@ -126,4 +156,14 @@ const imageStyle = css`
     width: 100%;
     object-fit: contain;
     display: block;
+`;
+
+const prevStyle = css`
+    left: -vw100;
+    margin-right: 2rem;
+`;
+
+const nextStyle = css`
+    right: vw100;
+    margin-left: 2rem;
 `;

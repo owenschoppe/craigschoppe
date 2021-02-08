@@ -11,8 +11,21 @@ import { Loader } from "./components/Loader";
 
 const getFiles = async () => {
     const data = await (await fetch("/files")).json();
-    const images = data[0].filter((file) => file.name.slice(-1) !== "/"); //Filter out folders
-    const folders = data[0].filter((file) => file.name.slice(-1) === "/"); //Find folders
+    const images = data[0]
+        .filter((file) => file.name.slice(-1) !== "/")
+        .map((file) => Object.assign(file, { folder: file.name.split("/")[0] })) //Filter out folders
+        .sort((file) => file.folder)
+        .map((file, i) => Object.assign(file, { index: i }));
+    const folders = data[0]
+        .filter((file) => file.name.slice(-1) === "/")
+        .map((file) => {
+            const folderImages = getImages(images, file);
+            return Object.assign(file, {
+                start: folderImages[0].index,
+                end: folderImages[folderImages.length - 1].index,
+            });
+        }); //Find folders
+    console.log(images, folders);
     return { images, folders };
 };
 
@@ -22,8 +35,10 @@ const getImages = (images, folder) => {
 
 function App() {
     const [allImages, setAllImages] = useState([]);
-    const [images, setImages] = useState([]);
+    // const [images, setImages] = useState([]);
     const [image, setImage] = useState(null);
+    const [nextImage, setnImage] = useState(null);
+    const [prevImage, setpImage] = useState(null);
     const [folders, setFolders] = useState([]);
 
     // const [folder, setFolder] = useStickyState(null, "folder");
@@ -43,43 +58,35 @@ function App() {
     }, [folder]);
 
     useEffect(() => {
-        if (folders.length && folder !== null)
-            setImages(getImages(allImages, folders[folder]));
+        if (folders.length && folder !== null) {
+            setIndex(folders[folder].start);
+        }
     }, [allImages, folders, folder]);
 
     useEffect(() => {
-        if (images) {
-            setImage(images[index]);
+        if (allImages) {
+            setImage(allImages[index]);
+            setnImage(allImages[getNextIndex()]);
+            setpImage(allImages[getPrevIndex()]);
         }
-    }, [images, index]);
+    }, [allImages, index]);
 
-    const prevImage = () => {
+    const prev = () => {
         setLoading(true);
-        if (index === 0) {
-            prevFolder();
-        } else {
-            setIndex((index - 1 + images.length) % images.length);
-        }
+        setIndex(getPrevIndex());
     };
 
-    const nextImage = () => {
+    const next = () => {
         setLoading(true);
-        if (index === images.length - 1) {
-            nextFolder();
-        } else {
-            setIndex((index + 1) % images.length);
-        }
+        setIndex(getNextIndex());
     };
 
-    const prevFolder = () => {
-        const newFolder = (folder - 1 + folders.length) % folders.length;
-        const newImages = getImages(allImages, folders[newFolder]); //Can this be optimized away?
-        setIndex(newImages.length - 1);
-        setFolder(newFolder);
-    };
+    const getPrevIndex = () =>
+        (index - 1 + allImages.length) % allImages.length;
+
+    const getNextIndex = () => (index + 1) % allImages.length;
 
     const nextFolder = () => {
-        setIndex(0);
         setFolder((folder + 1 + folders.length) % folders.length);
     };
 
@@ -87,8 +94,9 @@ function App() {
         <div className={appStyle}>
             <h1 className={cx(headerStyle, h1)}>
                 <FolderSelector
-                    folder={folder}
-                    folders={folders}
+                    // folder={folder}
+                    // folders={folders}
+                    image={image}
                     nextFolder={nextFolder}
                 />
                 <span className={cx(name)}>
@@ -100,15 +108,14 @@ function App() {
                 image={image}
                 nextImage={nextImage}
                 prevImage={prevImage}
+                next={next}
+                prev={prev}
+                loading={loading}
                 setLoading={setLoading}
             />
             <Loader loading={loading} />
             <div className={footerStyle}>
-                <Controls
-                    image={image}
-                    handleNext={nextImage}
-                    handlePrev={prevImage}
-                >
+                <Controls image={image} handleNext={next} handlePrev={prev}>
                     <TitleBlock image={image} />
                 </Controls>
             </div>

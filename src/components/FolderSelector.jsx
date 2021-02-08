@@ -23,7 +23,7 @@ const buttonStyle = css`
 `;
 
 const FolderSelector = (props) => {
-    const { folder, folders, nextFolder } = props;
+    const { image, nextFolder } = props;
 
     const getButton = () => {
         return (
@@ -32,14 +32,12 @@ const FolderSelector = (props) => {
                 onClick={nextFolder}
                 title="Click to Change"
             >
-                {folders.length && folder !== null
-                    ? folders[folder].name.slice(0, -1)
-                    : null}
+                {image.folder}
             </button>
         );
     };
 
-    return <div>{folder !== null ? getButton() : null}</div>;
+    return <div>{image ? getButton() : null}</div>;
 };
 
 export { FolderSelector };
