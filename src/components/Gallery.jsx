@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { css, cx, keyframes } from "@emotion/css";
 import { useSwipeable } from "react-swipeable";
 
 const Gallery = (props) => {
-    const {
-        image,
-        nextImage,
-        next,
-        prevImage,
-        prev,
-        loading,
-        setLoading,
-    } = props;
+    const { image, nextImage, next, prevImage, prev, setLoading } = props;
+
+    const getLeft = () => `calc(-100% - 2rem + ${left}px)`;
 
     const [left, setLeft] = useState(0);
     const [animationStyle, setAnimationStyle] = useState("");
@@ -23,7 +17,7 @@ const Gallery = (props) => {
     };
 
     const config = {
-        delta: 10, // min distance(px) before a swipe starts
+        delta: 20, // min distance(px) before a swipe starts
         preventDefaultTouchmoveEvent: false, // call e.preventDefault *See Details*
         trackTouch: true, // track touch input
         trackMouse: false, // track mouse input
@@ -33,11 +27,11 @@ const Gallery = (props) => {
     const handlers = useSwipeable({
         onSwiped: (eventData) => {},
         onSwipedLeft: (eventData) => {
-            next();
+            // next();
             setAnimationStyle(animateLeft);
         },
         onSwipedRight: (eventData) => {
-            prev();
+            // prev();
             setAnimationStyle(animateRight);
         },
         onSwiping: (eventData) => {
@@ -46,17 +40,25 @@ const Gallery = (props) => {
         ...config,
     });
 
+    const handleEndAnimation = () => {
+        if (left >= 0) {
+            prev();
+        } else {
+            next();
+        }
+    };
+
     const swipeStyle = css`
-        left: ${left}px;
+        left: ${getLeft()};
     `;
 
     const slideLeft = keyframes`
         from {
-          left: ${left}px;
+          left: ${getLeft()};
         }
 
         to {
-          left: -100%;
+          left: calc(-200% - 4rem);
         }
     `;
 
@@ -68,11 +70,11 @@ const Gallery = (props) => {
 
     const slideRight = keyframes`
         from {
-          left: ${left}px;
+          left: ${getLeft()};
         }
 
         to {
-          left: 100%;
+          left: 0;
         }
     `;
 
@@ -86,6 +88,7 @@ const Gallery = (props) => {
         <div
             className={cx(galleryStyle, swipeStyle, animationStyle)}
             {...handlers}
+            onAnimationEnd={handleEndAnimation}
         >
             {prevImage ? (
                 <img
@@ -131,7 +134,7 @@ export { Gallery };
 
 const galleryStyle = css`
     max-height: 100%;
-    max-width: 100%;
+    width: calc(300% + 4rem);
     min-height: 0;
     min-width: 0;
     display: flex;
@@ -141,13 +144,12 @@ const galleryStyle = css`
     margin: 1rem 0;
     touch-action: pan-x pan-y;
     position: relative;
-    left: 0;
-    @media (min-width: 740px) {
-        margin: 1rem;
-    }
-    @media (min-width: 1024px) {
-        margin: 3rem;
-    }
+    // @media (min-width: 740px) {
+    //     margin: 1rem;
+    // }
+    // @media (min-width: 1024px) {
+    //     margin: 3rem;
+    // }
 `;
 
 const imageStyle = css`
@@ -156,14 +158,20 @@ const imageStyle = css`
     width: 100%;
     object-fit: contain;
     display: block;
+    // @media (min-width: 740px) {
+    //     padding: 1rem;
+    // }
+    // @media (min-width: 1024px) {
+    //     padding: 3rem;
+    // }
 `;
 
 const prevStyle = css`
-    left: -vw100;
+    left: -100vw;
     margin-right: 2rem;
 `;
 
 const nextStyle = css`
-    right: vw100;
+    right: 100vw;
     margin-left: 2rem;
 `;
