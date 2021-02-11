@@ -9,7 +9,7 @@ const Gallery = (props) => {
     const [direction, setDirection] = useState(0);
     const [animationStyle, setAnimationStyle] = useState("");
 
-    const getLeft = () => `calc(-100% - 2rem + ${left}px)`;
+    const getLeft = () => `calc(-100% + ${left}px)`;
 
     const swipeStyle = css`
         left: ${getLeft()};
@@ -21,7 +21,7 @@ const Gallery = (props) => {
         }
 
         to {
-          left: calc(-200% - 4rem);
+          left: -200%;
         }
     `;
 
@@ -53,7 +53,7 @@ const Gallery = (props) => {
         }
 
         to {
-          left: calc(-100% - 2rem);
+          left: -100%;
         }
     `;
 
@@ -116,45 +116,53 @@ const Gallery = (props) => {
 
     return (
         <div
+            key={`${image ? image.id : "empty"}`}
             className={cx(galleryStyle, swipeStyle, animationStyle)}
             {...handlers}
             onAnimationEnd={handleEndAnimation}
         >
             {prevImage ? (
-                <img
-                    className={cx(imageStyle, prevStyle)}
-                    sizes="100vw"
-                    src={`https://storage.googleapis.com/craigschoppe-images/${prevImage.id}`}
-                    srcSet={`https://storage.googleapis.com/craigschoppe-images/${prevImage.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${prevImage.id} 800w`}
-                    alt={`${prevImage.name}, by Craig Schoppe.`}
-                    width="1920px"
-                    height="auto"
-                />
+                <div className={cx(frameStyle, prevArea)}>
+                    <img
+                        key={prevImage.id}
+                        className={cx(imageStyle, prevStyle)}
+                        sizes="100vw"
+                        src={`https://storage.googleapis.com/craigschoppe-images/${prevImage.id}`}
+                        srcSet={`https://storage.googleapis.com/craigschoppe-images/${prevImage.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${prevImage.id} 800w`}
+                        alt={`${prevImage.name}, by Craig Schoppe.`}
+                        width="1920px"
+                        height="auto"
+                    />
+                </div>
             ) : null}
             {image ? (
-                <img
-                    className={cx(imageStyle)}
-                    sizes="100vw"
-                    src={`https://storage.googleapis.com/craigschoppe-images/${image.id}`}
-                    srcSet={`https://storage.googleapis.com/craigschoppe-images/${image.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${image.id} 800w`}
-                    alt={`${image.name}, by Craig Schoppe.`}
-                    width="1920px"
-                    height="auto"
-                    onLoad={
-                        resetGallery //The problem is that the image index updates, and then the browser tries to fetch the image.
-                    }
-                />
+                <div className={cx(frameStyle, currentArea)}>
+                    <img
+                        key={image.id}
+                        className={cx(imageStyle)}
+                        sizes="100vw"
+                        src={`https://storage.googleapis.com/craigschoppe-images/${image.id}`}
+                        srcSet={`https://storage.googleapis.com/craigschoppe-images/${image.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${image.id} 800w`}
+                        alt={`${image.name}, by Craig Schoppe.`}
+                        width="1920px"
+                        height="auto"
+                        onLoad={resetGallery}
+                    />
+                </div>
             ) : null}
             {nextImage ? (
-                <img
-                    className={cx(imageStyle, nextStyle)}
-                    sizes="100vw"
-                    src={`https://storage.googleapis.com/craigschoppe-images/${nextImage.id}`}
-                    srcSet={`https://storage.googleapis.com/craigschoppe-images/${nextImage.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${nextImage.id} 800w`}
-                    alt={`${nextImage.name}, by Craig Schoppe.`}
-                    width="1920px"
-                    height="auto"
-                />
+                <div className={cx(frameStyle, nextArea)}>
+                    <img
+                        key={nextImage.id}
+                        className={cx(imageStyle, nextStyle)}
+                        sizes="100vw"
+                        src={`https://storage.googleapis.com/craigschoppe-images/${nextImage.id}`}
+                        srcSet={`https://storage.googleapis.com/craigschoppe-images/${nextImage.id} 1920w, https://storage.googleapis.com/craigschoppe-images-small/${nextImage.id} 800w`}
+                        alt={`${nextImage.name}, by Craig Schoppe.`}
+                        width="1920px"
+                        height="auto"
+                    />
+                </div>
             ) : null}
         </div>
     );
@@ -164,21 +172,23 @@ export { Gallery };
 
 const galleryStyle = css`
     max-height: 100%;
-    width: calc(300% + 4rem);
+    width: 300%;
+    height: 100%;
     min-height: 0;
     min-width: 0;
-    display: flex;
-    flex: 1 1 100%;
-    justify-content: center;
-    align-items: center;
-    margin: 1rem 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-column-gap: 2rem;
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-areas: "prev current next";
     touch-action: pan-x pan-y;
     position: relative;
+    // margin: 1rem 0;
     // @media (min-width: 740px) {
-    //     margin: 1rem;
+    //     margin: 1rem 0;
     // }
     // @media (min-width: 1024px) {
-    //     margin: 3rem;
+    //     margin: 3rem 0;
     // }
 `;
 
@@ -188,20 +198,31 @@ const imageStyle = css`
     width: 100%;
     object-fit: contain;
     display: block;
-    // @media (min-width: 740px) {
-    //     padding: 1rem;
-    // }
-    // @media (min-width: 1024px) {
-    //     padding: 3rem;
-    // }
 `;
 
-const prevStyle = css`
-    left: -100vw;
-    margin-right: 2rem;
+const prevStyle = css``;
+
+const nextStyle = css``;
+
+const frameStyle = css`
+    display: flex;
+    margin: 1rem 0;
+    @media (min-width: 740px) {
+        margin: 1rem;
+    }
+    @media (min-width: 1024px) {
+        margin: 3rem;
+    }
 `;
 
-const nextStyle = css`
-    right: 100vw;
-    margin-left: 2rem;
+const prevArea = css`
+    grid-area: prev;
+`;
+
+const nextArea = css`
+    grid-area: next;
+`;
+
+const currentArea = css`
+    grid-area: current;
 `;
