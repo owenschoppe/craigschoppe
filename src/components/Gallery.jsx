@@ -121,8 +121,8 @@ const Gallery = (props) => {
             {...handlers}
             onAnimationEnd={handleEndAnimation}
         >
-            {prevImage ? (
-                <div className={cx(frameStyle, prevArea)}>
+            <div className={cx(areaStyle, prevArea)}>
+                {prevImage ? (
                     <img
                         key={prevImage.id}
                         className={cx(imageStyle, prevStyle)}
@@ -133,10 +133,11 @@ const Gallery = (props) => {
                         width="1920px"
                         height="auto"
                     />
-                </div>
-            ) : null}
-            {image ? (
-                <div className={cx(frameStyle, currentArea)}>
+                ) : null}
+            </div>
+
+            <div className={cx(areaStyle, currentArea)}>
+                {image ? (
                     <img
                         key={image.id}
                         className={cx(imageStyle)}
@@ -148,10 +149,11 @@ const Gallery = (props) => {
                         height="auto"
                         onLoad={resetGallery}
                     />
-                </div>
-            ) : null}
-            {nextImage ? (
-                <div className={cx(frameStyle, nextArea)}>
+                ) : null}
+            </div>
+
+            <div className={cx(areaStyle, nextArea)}>
+                {nextImage ? (
                     <img
                         key={nextImage.id}
                         className={cx(imageStyle, nextStyle)}
@@ -162,8 +164,8 @@ const Gallery = (props) => {
                         width="1920px"
                         height="auto"
                     />
-                </div>
-            ) : null}
+                ) : null}
+            </div>
         </div>
     );
 };
@@ -183,13 +185,6 @@ const galleryStyle = css`
     grid-template-areas: "prev current next";
     touch-action: pan-x pan-y;
     position: relative;
-    // margin: 1rem 0;
-    // @media (min-width: 740px) {
-    //     margin: 1rem 0;
-    // }
-    // @media (min-width: 1024px) {
-    //     margin: 3rem 0;
-    // }
 `;
 
 const imageStyle = css`
@@ -204,7 +199,7 @@ const prevStyle = css``;
 
 const nextStyle = css``;
 
-const frameStyle = css`
+const areaStyle = css`
     display: flex;
     margin: 1rem 0;
     @media (min-width: 740px) {
