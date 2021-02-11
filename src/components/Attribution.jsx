@@ -2,29 +2,6 @@ import { css } from "@emotion/css";
 import cc from "../creative-commons.svg";
 import { assistiveText } from "./SharedStyles";
 
-const attributionStyle = css`
-    margin-left: 0.125rem;
-    display: inline-block;
-    & > a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 1.5rem;
-        height: 1.5rem;
-        border-radius: 50%;
-        &:hover,
-        &:focus {
-            outline: none;
-            border: none;
-            box-shadow: 0 0 0 1px white;
-        }
-        & img {
-            width: 0.75rem;
-            height: 0.75rem;
-        }
-    }
-`;
-
 const Attribution = () => {
     return (
         <span className={attributionStyle}>
@@ -50,3 +27,26 @@ const Attribution = () => {
 };
 
 export { Attribution };
+
+const attributionStyle = css`
+    margin-left: 0.125rem;
+    display: inline-block;
+    & > a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        &:hover,
+        &:focus {
+            outline: none;
+            border: none;
+            box-shadow: 0 0 0 1px white;
+        }
+        & img {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+    }
+`;

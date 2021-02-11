@@ -1,5 +1,25 @@
 import { css } from "@emotion/css";
 
+const FolderSelector = (props) => {
+    const { image, nextFolder } = props;
+
+    const getButton = () => {
+        return (
+            <button
+                className={buttonStyle}
+                onClick={nextFolder}
+                title="Click to Change"
+            >
+                {image.folder}
+            </button>
+        );
+    };
+
+    return <div>{image ? getButton() : null}</div>;
+};
+
+export { FolderSelector };
+
 const buttonStyle = css`
     color: white;
     font-family: "Cormorant Garamond", serif;
@@ -21,23 +41,3 @@ const buttonStyle = css`
         box-shadow: 0 2px 0 0 white;
     }
 `;
-
-const FolderSelector = (props) => {
-    const { image, nextFolder } = props;
-
-    const getButton = () => {
-        return (
-            <button
-                className={buttonStyle}
-                onClick={nextFolder}
-                title="Click to Change"
-            >
-                {image.folder}
-            </button>
-        );
-    };
-
-    return <div>{image ? getButton() : null}</div>;
-};
-
-export { FolderSelector };

@@ -11,11 +11,13 @@ import { Loader } from "./components/Loader";
 
 const getFiles = async () => {
     const data = await (await fetch("/files")).json();
+
     const images = data[0]
         .filter((file) => file.name.slice(-1) !== "/")
         .map((file) => Object.assign(file, { folder: file.name.split("/")[0] })) //Filter out folders
         .sort((file) => file.folder)
         .map((file, i) => Object.assign(file, { index: i }));
+
     const folders = data[0]
         .filter((file) => file.name.slice(-1) === "/")
         .map((file) => {
@@ -24,8 +26,8 @@ const getFiles = async () => {
                 start: folderImages[0].index,
                 end: folderImages[folderImages.length - 1].index,
             });
-        }); //Find folders
-    console.log(images, folders);
+        });
+
     return { images, folders };
 };
 
@@ -35,17 +37,12 @@ const getImages = (images, folder) => {
 
 function App() {
     const [allImages, setAllImages] = useState([]);
-    // const [images, setImages] = useState([]);
     const [image, setImage] = useState(null);
     const [nextImage, setnImage] = useState(null);
     const [prevImage, setpImage] = useState(null);
     const [folders, setFolders] = useState([]);
-
-    // const [folder, setFolder] = useStickyState(null, "folder");
-    // const [index, setIndex] = useStickyState(0, "index");
     const [folder, setFolder] = useState(null);
     const [index, setIndex] = useState(0);
-
     const [loading, setLoading] = useState(false);
 
     // Intialize app
@@ -57,12 +54,14 @@ function App() {
         });
     }, [folder]);
 
+    //Go to the first image when the folder changes
     useEffect(() => {
         if (folders.length && folder !== null) {
             setIndex(folders[folder].start);
         }
     }, [allImages, folders, folder]);
 
+    //Set the images when the index changes
     useEffect(() => {
         if (allImages) {
             setImage(allImages[index]);
@@ -93,12 +92,7 @@ function App() {
     return (
         <div className={appStyle}>
             <h1 className={cx(headerStyle, h1)}>
-                <FolderSelector
-                    // folder={folder}
-                    // folders={folders}
-                    image={image}
-                    nextFolder={nextFolder}
-                />
+                <FolderSelector image={image} nextFolder={nextFolder} />
                 <span className={cx(name)}>
                     by Craig Schoppe
                     <Attribution />
