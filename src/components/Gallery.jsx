@@ -5,48 +5,11 @@ import { useSwipeable } from "react-swipeable";
 const Gallery = (props) => {
     const { image, nextImage, next, prevImage, prev, setLoading } = props;
 
-    const getLeft = () => `calc(-100% - 2rem + ${left}px)`;
-
     const [left, setLeft] = useState(0);
+    const [direction, setDirection] = useState(0);
     const [animationStyle, setAnimationStyle] = useState("");
 
-    const resetGallery = () => {
-        setAnimationStyle("");
-        setLeft(0);
-        setLoading(false);
-    };
-
-    const config = {
-        delta: 20, // min distance(px) before a swipe starts
-        preventDefaultTouchmoveEvent: false, // call e.preventDefault *See Details*
-        trackTouch: true, // track touch input
-        trackMouse: false, // track mouse input
-        rotationAngle: 0, // set a rotation angle
-    };
-
-    const handlers = useSwipeable({
-        onSwiped: (eventData) => {},
-        onSwipedLeft: (eventData) => {
-            // next();
-            setAnimationStyle(animateLeft);
-        },
-        onSwipedRight: (eventData) => {
-            // prev();
-            setAnimationStyle(animateRight);
-        },
-        onSwiping: (eventData) => {
-            setLeft(eventData.deltaX);
-        },
-        ...config,
-    });
-
-    const handleEndAnimation = () => {
-        if (left >= 0) {
-            prev();
-        } else {
-            next();
-        }
-    };
+    const getLeft = () => `calc(-100% - 2rem + ${left}px)`;
 
     const swipeStyle = css`
         left: ${getLeft()};
@@ -83,6 +46,73 @@ const Gallery = (props) => {
         animation-fill-mode: forwards;
         animation-direction: normal;
     `;
+
+    const slideHome = keyframes`
+        from {
+          left: ${getLeft()};
+        }
+
+        to {
+          left: calc(-100% - 2rem);
+        }
+    `;
+
+    const animateHome = css`
+        animation: ${slideHome} 1s ease-out 1;
+        animation-fill-mode: forwards;
+        animation-direction: normal;
+    `;
+
+    const threshold = 40;
+
+    const getDirection = (eventData) =>
+        eventData.deltaX > threshold
+            ? "prev"
+            : eventData.deltaX < -threshold
+            ? "next"
+            : "home";
+
+    const resetGallery = () => {
+        setAnimationStyle("");
+        setLeft(0);
+        setLoading(false);
+    };
+
+    const swipeAction = {
+        next: next,
+        home: resetGallery,
+        prev: prev,
+    };
+
+    const swipeAnimation = {
+        next: animateLeft,
+        home: animateHome,
+        prev: animateRight,
+    };
+
+    const config = {
+        delta: 10, // min distance(px) before a swipe starts
+        preventDefaultTouchmoveEvent: false, // call e.preventDefault *See Details*
+        trackTouch: true, // track touch input
+        trackMouse: false, // track mouse input
+        rotationAngle: 0, // set a rotation angle
+    };
+
+    const handlers = useSwipeable({
+        onSwiped: (eventData) => {
+            const direction = getDirection(eventData);
+            setDirection(direction);
+            setAnimationStyle(swipeAnimation[direction]);
+        },
+        onSwiping: (eventData) => {
+            setLeft(eventData.deltaX);
+        },
+        ...config,
+    });
+
+    const handleEndAnimation = () => {
+        swipeAction[direction]();
+    };
 
     return (
         <div
