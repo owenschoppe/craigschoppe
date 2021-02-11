@@ -47,6 +47,11 @@ function App() {
 
     // Intialize app
     useEffect(() => {
+        console.log("Created in loving memory of my dad. -Owen");
+    }, []);
+
+    //Select a random folder to start
+    useEffect(() => {
         getFiles().then(({ images, folders }) => {
             setAllImages(images);
             setFolders(folders);
