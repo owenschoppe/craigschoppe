@@ -10,7 +10,7 @@
     },
     "proxy": "http://localhost:8080",
     "engines": {
-        "node": ">= 12.x"
+        "node": "12.x.x"
     },
     "dependencies": {
         "@emotion/css": "^11.1.3",

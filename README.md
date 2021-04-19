@@ -15,7 +15,10 @@ Set the default sharing policy to public:
 When running locally, you can use the [Google Cloud SDK](https://cloud.google.com/sdk)
 to provide authentication to use Google Cloud APIs:
 
-    gcloud init
+    `gcloud init`
+
+    `gcloud projects list`
+    `gcloud config set project my-project`
 
 Start the server using `npm run-script start:local`. This sets the appropriate gcloud environment variables.
 
@@ -24,8 +27,8 @@ And start the react app in dev mode using `npm run-script start:react`. This inc
 ## Deploy
 Then build locally before deploying:
 
-    npm run-script build
-    gcloud app deploy
+    `npm run-script build`
+    `gcloud app deploy`
 
 ## Images
 Images are stored on Google Cloud storage in a bucket. Multiple buckets are used for performant images.
