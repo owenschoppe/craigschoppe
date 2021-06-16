@@ -18,7 +18,7 @@ to provide authentication to use Google Cloud APIs:
     `gcloud init`
 
     `gcloud projects list`
-    `gcloud config set project my-project`
+    `gcloud config set project craigschoppe`
 
 Start the server using `npm run-script start:local`. This sets the appropriate gcloud environment variables.
 
