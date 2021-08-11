@@ -188,6 +188,8 @@ const galleryStyle = css`
     minmax(0, 1fr)
     minmax(0, 1fr);
   grid-column-gap: 2rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
   grid-template-rows: minmax(0, 1fr);
   grid-template-areas: "prev current next";
   touch-action: pan-x pan-y;
