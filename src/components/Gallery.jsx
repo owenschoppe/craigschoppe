@@ -73,7 +73,6 @@ const Gallery = (props) => {
       : "home";
 
   const resetGallery = () => {
-    console.log("resetGallery");
     setAnimationStyle("");
     setLeft(0);
     setLoading(false);
@@ -101,20 +100,17 @@ const Gallery = (props) => {
 
   const handlers = useSwipeable({
     onSwiped: (eventData) => {
-      console.log("swiped", eventData);
       const direction = getDirection(eventData);
       setDirection(direction);
       setAnimationStyle(swipeAnimation[direction]);
     },
     onSwiping: (eventData) => {
-      console.log("swiping", eventData);
       setLeft(eventData.deltaX);
     },
     ...config,
   });
 
   const handleEndAnimation = (eventData) => {
-    console.log("animationEnd", eventData);
     swipeAction[direction]();
   };
 

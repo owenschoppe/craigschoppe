@@ -17,11 +17,11 @@
 const process = require("process"); // Required to mock environment variables
 
 // [START gae_flex_storage_app]
-const { format } = require("util");
+// const { format } = require("util");
 const express = require("express");
 const path = require("path");
-const Multer = require("multer");
-const bodyParser = require("body-parser");
+// const Multer = require("multer");
+// const bodyParser = require("body-parser");
 const compression = require("compression");
 
 // By default, the client will authenticate using the service account file
@@ -37,30 +37,30 @@ const storage = new Storage();
 const app = express();
 app.set("trust proxy", true);
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use(compression());
 
 if (app.get("env") === "production") {
-    app.use(function (req, res, next) {
-        if (req.secure) {
-            // request was via https, so do no special handling
-            next();
-        } else {
-            // request was via http, so redirect to https
-            res.redirect("https://" + req.headers.host + req.url);
-        }
-    });
+  app.use((req, res, next) => {
+    if (req.secure) {
+      // request was via https, so do no special handling
+      next();
+    } else {
+      // request was via http, so redirect to https
+      res.redirect("https://" + req.headers.host + req.url);
+    }
+  });
 }
 
 // Multer is required to process file uploads and make them available via
 // req.files.
-const multer = Multer({
-    storage: Multer.memoryStorage(),
-    limits: {
-        fileSize: 5 * 1024 * 1024, // no larger than 5mb, you can change as needed.
-    },
-});
+// const multer = Multer({
+//   storage: Multer.memoryStorage(),
+//   limits: {
+//     fileSize: 5 * 1024 * 1024, // no larger than 5mb, you can change as needed.
+//   },
+// });
 
 // A bucket is a container for objects (files).
 const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
@@ -71,22 +71,22 @@ const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
 // });
 
 async function listFilesPaginated() {
-    return await bucket.getFiles({
-        autoPaginate: true,
-    });
+  return await bucket.getFiles({
+    autoPaginate: true,
+  });
 }
 
-app.get("/files", (req, res) => {
-    listFilesPaginated()
-        .then((data) => {
-            // console.log(data);
-            res.json([
-                data[0].map((d) => {
-                    return { id: d.id, name: d.name };
-                }),
-            ]);
-        })
-        .catch(console.error);
+app.get("/files", (_req, res) => {
+  listFilesPaginated()
+    .then((data) => {
+      // console.log(data);
+      res.json([
+        data[0].map((d) => {
+          return { id: d.id, name: d.name };
+        }),
+      ]);
+    })
+    .catch(console.error);
 });
 
 // Process the file upload and upload to Google Cloud Storage.
@@ -116,22 +116,20 @@ app.get("/files", (req, res) => {
 // });
 
 app.use(
-    express.static(path.join(__dirname, "build"), {
-        setHeaders: (res, path) => {
-            // if (path.endsWith("sitemap.xml")) {
-            res.setHeader("X-Robots-Tag", "noindex, nofollow");
-            // }
-        },
-    })
+  express.static(path.join(__dirname, "build"), {
+    setHeaders: (res, _path) => {
+      res.setHeader("X-Robots-Tag", "noindex, nofollow");
+    },
+  })
 );
-app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, "build", "index.html"));
+app.get("/", function (_req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-    console.log("Press Ctrl+C to quit.");
+  console.log(`App listening on port ${PORT}`);
+  console.log("Press Ctrl+C to quit.");
 });
 // [END gae_flex_storage_app]
 
