@@ -56,13 +56,11 @@ function App() {
   );
 
   const prev = () => {
-    console.log("prev");
     setLoading(true);
     setIndex(getPrevIndex());
   };
 
   const next = () => {
-    console.log("next");
     setLoading(true);
     setIndex(getNextIndex());
   };
