@@ -1,6 +1,7 @@
 {
   "name": "craigschoppe",
   "description": "Portfolio in Memorial",
+  "homepage": "https://www.craigschoppe.com",
   "scripts": {
     "start:local": "./build.sh",
     "start:react": "react-scripts start",
