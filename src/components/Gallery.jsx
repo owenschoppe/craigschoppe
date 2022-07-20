@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { css, cx, keyframes } from "@emotion/css";
-import { useSwipeable } from "react-swipeable";
+import { useState } from 'react';
+import { css, cx, keyframes } from '@emotion/css';
+import { useSwipeable } from 'react-swipeable';
 
 const Gallery = (props) => {
   const { image, nextImage, next, prevImage, prev, setLoading } = props;
 
   const [left, setLeft] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [animationStyle, setAnimationStyle] = useState("");
+  const [animationStyle, setAnimationStyle] = useState('');
 
   const getLeft = () => `calc(-100% + ${left}px)`;
 
@@ -67,13 +67,13 @@ const Gallery = (props) => {
 
   const getDirection = (eventData) =>
     eventData.deltaX > threshold
-      ? "prev"
+      ? 'prev'
       : eventData.deltaX < -threshold
-      ? "next"
-      : "home";
+      ? 'next'
+      : 'home';
 
   const resetGallery = () => {
-    setAnimationStyle("");
+    setAnimationStyle('');
     setLeft(0);
     setLoading(false);
   };
@@ -116,7 +116,7 @@ const Gallery = (props) => {
 
   return (
     <div
-      key={`${image ? image.id : "empty"}`}
+      key={`${image ? image.id : 'empty'}`}
       className={cx(galleryStyle, swipeStyle, animationStyle)}
       {...handlers}
       onAnimationEnd={handleEndAnimation}
@@ -187,7 +187,7 @@ const galleryStyle = css`
   padding: 0 1rem;
   box-sizing: border-box;
   grid-template-rows: minmax(0, 1fr);
-  grid-template-areas: "prev current next";
+  grid-template-areas: 'prev current next';
   touch-action: pan-x pan-y;
   position: relative;
 `;

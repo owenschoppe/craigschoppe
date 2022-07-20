@@ -1,16 +1,16 @@
-import { useCallback, useEffect } from "react";
-import { css, cx } from "@emotion/css";
-import arrow from "../arrow.svg";
+import { useCallback, useEffect } from 'react';
+import { css, cx } from '@emotion/css';
+import arrow from '../assets/arrow.svg';
 
 const Controls = (props) => {
   const { image, handleNext, handlePrev } = props;
 
   const handleKeyboard = useCallback(
     (e) => {
-      if (e.key === "ArrowLeft") {
+      if (e.key === 'ArrowLeft') {
         // left arrow
         handlePrev();
-      } else if (e.key === "ArrowRight") {
+      } else if (e.key === 'ArrowRight') {
         // right arrow
         handleNext();
       }
@@ -19,9 +19,9 @@ const Controls = (props) => {
   );
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyboard);
+    window.addEventListener('keydown', handleKeyboard);
     return () => {
-      window.removeEventListener("keydown", handleKeyboard);
+      window.removeEventListener('keydown', handleKeyboard);
     };
   }, [image, handleKeyboard]);
 
@@ -61,7 +61,7 @@ const Controls = (props) => {
 export { Controls };
 
 const controlsStyle = css`
-  font-family: "Poppins", Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
   display: flex;
   flex: 1 1 auto;
   justify-content: space-between;

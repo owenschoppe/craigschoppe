@@ -1,25 +1,23 @@
-import { useState, useEffect, useCallback } from "react";
-import { Controls } from "./components/Controls";
-import { FolderSelector } from "./components/FolderSelector";
-import { TitleBlock } from "./components/TitleBlock";
-import { Attribution } from "./components/Attribution";
-// import { useStickyState } from "./components/useStickyState";
-import { css, cx } from "@emotion/css";
-// import ig from "./instagram.png";
-import { Gallery } from "./components/Gallery";
-import { Loader } from "./components/Loader";
+import { useState, useEffect, useCallback } from 'react';
+import { Controls } from './components/Controls';
+import { FolderSelector } from './components/FolderSelector';
+import { TitleBlock } from './components/TitleBlock';
+import { Attribution } from './components/Attribution';
+import { css, cx } from '@emotion/css';
+import { Gallery } from './components/Gallery';
+import { Loader } from './components/Loader';
 
 const getFiles = async () => {
-  const data = await (await fetch("/files")).json();
+  const data = await (await fetch('/files')).json();
 
   const images = data[0]
-    .filter((file) => file.name.slice(-1) !== "/")
-    .map((file) => Object.assign(file, { folder: file.name.split("/")[0] })) //Filter out folders
+    .filter((file) => file.name.slice(-1) !== '/')
+    .map((file) => Object.assign(file, { folder: file.name.split('/')[0] })) //Filter out folders
     .sort((file) => file.folder)
     .map((file, i) => Object.assign(file, { index: i }));
 
   const folders = data[0]
-    .filter((file) => file.name.slice(-1) === "/")
+    .filter((file) => file.name.slice(-1) === '/')
     .map((file) => {
       const folderImages = getImages(images, file);
       return Object.assign(file, {
@@ -71,7 +69,7 @@ function App() {
 
   // Intialize app
   useEffect(() => {
-    console.log("Created in loving memory of my dad. -Owen");
+    console.log('Created in loving memory of my dad. -Owen');
   }, []);
 
   //Select a random folder to start
@@ -123,12 +121,6 @@ function App() {
           <TitleBlock image={image} />
         </Controls>
       </div>
-      {/* <a
-                        className={instagramStyle}
-                        href="https://www.instagram.com/wood_by_schoppe/"
-                    >
-                        <span className="assistiveText">Instagram</span>
-                    </a> */}
     </div>
   );
 }
@@ -153,7 +145,7 @@ const headerStyle = css`
   padding: 0;
   padding-left: 1rem;
   padding-right: 0.125rem;
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
 `;
 
 const h1 = css`
@@ -173,18 +165,6 @@ const name = css`
   flex: 0 0 auto;
   margin-left: 0.125rem;
 `;
-
-// const instagramStyle = css`
-//     width: 24px;
-//     height: 24px;
-//     content: "";
-//     display: block;
-//     background-image: url(${ig});
-//     filter: invert(100%);
-//     background-size: contain;
-//     background-repeat: no-repeat;
-//     margin-left: 0.25rem;
-// `;
 
 const footerStyle = css`
   display: flex;

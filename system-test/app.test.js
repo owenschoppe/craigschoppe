@@ -11,10 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Mocha tests for google cloud storage
+// Requires credentials set by app engine environment
+
 'use strict';
 
 const path = require('path');
-const {Storage} = require('@google-cloud/storage');
+const { Storage } = require('@google-cloud/storage');
 const storage = new Storage();
 const assert = require('assert');
 const supertest = require('supertest');
@@ -24,7 +27,7 @@ const bucketName = process.env.GCLOUD_STORAGE_BUCKET;
 const bucket = storage.bucket(bucketName);
 
 const cwd = path.join(__dirname, '../');
-const requestObj = supertest(proxyquire(path.join(cwd, 'app'), {process}));
+const requestObj = supertest(proxyquire(path.join(cwd, 'server'), { process }));
 
 before(async () => {
   assert(
@@ -56,7 +59,7 @@ describe('gae_flex_storage_app', () => {
     await requestObj
       .get('/')
       .expect(200)
-      .expect(response => {
+      .expect((response) => {
         assert.strictEqual(
           new RegExp(/<input type="file" name="file">/).test(response.text),
           true
@@ -69,7 +72,7 @@ describe('gae_flex_storage_app', () => {
       .post('/upload')
       .attach('file', path.join(__dirname, 'resources/test.txt'))
       .expect(200)
-      .expect(response => {
+      .expect((response) => {
         assert.strictEqual(
           response.text,
           `https://storage.googleapis.com/${bucketName}/test.txt`
