@@ -79,7 +79,6 @@ function App() {
   };
 
   const nextFolder = () => {
-    console.log(folders);
     setFolder((folder + 1 + folders.length) % folders.length);
   };
 
