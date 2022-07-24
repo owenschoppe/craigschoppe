@@ -11,20 +11,35 @@ const getFiles = async () => {
   const data = await (await fetch('/files')).json();
 
   const images = data[0]
-    .filter((file) => file.name.slice(-1) !== '/')
+    .filter((file) => file.name.includes('/'))
     .map((file) => Object.assign(file, { folder: file.name.split('/')[0] })) //Filter out folders
     .sort((file) => file.folder)
     .map((file, i) => Object.assign(file, { index: i }));
 
-  const folders = data[0]
-    .filter((file) => file.name.slice(-1) === '/')
-    .map((file) => {
-      const folderImages = getImages(images, file);
-      return Object.assign(file, {
-        start: folderImages[0].index,
-        end: folderImages[folderImages.length - 1].index,
-      });
+  let folders = data[0].filter((file) => !file.name.includes('/'));
+
+  if (!folders.length) {
+    folders = Object.values(
+      images.reduce((folders, img) => {
+        folders[img.folder] = { ...img };
+        return folders;
+      }, {})
+    ).map((folder) => {
+      folder.id = folder.id.split('%2F')[0];
+      folder.name = folder.name.split('/')[0];
+      delete folder.folder;
+      delete folder.index;
+      return folder;
     });
+  }
+
+  folders = folders.map((file) => {
+    const folderImages = getImages(images, file);
+    return Object.assign(file, {
+      start: folderImages[0].index,
+      end: folderImages[folderImages.length - 1].index,
+    });
+  });
 
   return { images, folders };
 };
@@ -64,6 +79,7 @@ function App() {
   };
 
   const nextFolder = () => {
+    console.log(folders);
     setFolder((folder + 1 + folders.length) % folders.length);
   };
 
